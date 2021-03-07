@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MessageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,10 +19,10 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::view('/', 'chat')->middleware('auth');
-Route::resource('messages', 'MessageController')->only([
+Route::view('/home', 'chat')->middleware('auth');
+Route::resource('messages', MessageController::class)->only([
     'index',
     'store'
 ]);
