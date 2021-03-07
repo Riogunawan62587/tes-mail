@@ -48,12 +48,12 @@ class MessageController extends Controller
             'message' => $request->input('message')
         ]);
         // send event to listeners
-        // broadcast(new MessageSentEvent($message, $user))->toOthers();
+        broadcast(new MessageSentEvent($message->load('user'), $user))->toOthers();
 
-        return [
-            'message' => $message,
-            'user' => $user,
-        ];
+        // return [
+        //     'message' => $message,
+        //     'user' => $user,
+        // ];
     }
 
     /**
