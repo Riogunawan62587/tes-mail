@@ -42,6 +42,7 @@ const app = new Vue({
             .listen('MessageSentEvent', (e) => {
                 this.messages.push({
                     message: e.message.message,
+                    created_at: e.message.created_at,
                     user: e.user
                 });
             });
@@ -71,3 +72,11 @@ const app = new Vue({
         }
     }
 });
+
+import moment from 'moment'
+
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY hh:mm')
+  }
+}
