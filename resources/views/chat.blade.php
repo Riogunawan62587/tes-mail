@@ -24,7 +24,7 @@
             <ul>
               <li style="list-style: none;">
                 <div class="chat-head">
-                  @{{ message.user.name }} | @{{ message.created_at | formatDate }}
+                  @{{ message.user.name }} | <span class="text-muted">@{{isToday(message.created_at)}}</span>
                 </div>
                 <div class="bg-primary py-2 px-3 text-white chat-body d-inline-block" style="border-radius: 0 15px 15px 15px;">
                   @{{ message.message }}
@@ -43,3 +43,7 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+
+@endpush

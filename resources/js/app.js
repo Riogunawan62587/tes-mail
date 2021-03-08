@@ -27,6 +27,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+var moment = require('moment');
+
+
 const app = new Vue({
     el: '#app',
 
@@ -69,14 +72,10 @@ const app = new Vue({
         sendMessage() {
             this.addMessage(this.newMessage);
             this.newMessage = '';
+        },
+
+        isToday(date) {
+            return moment(String(date)).format('MM-DD-YYYY hh:mm');
         }
     }
 });
-
-import moment from 'moment'
-
-Vue.filter('formatDate', function(value) {
-  if (value) {
-    return moment(String(value)).format('MM/DD/YYYY hh:mm')
-  }
-}

@@ -1,5 +1,6 @@
 import Echo from 'laravel-echo';
 import Larasocket from 'larasocket-js';
+
 window.Echo = new Echo({
     broadcaster: Larasocket,
     token: process.env.MIX_LARASOCKET_TOKEN,
