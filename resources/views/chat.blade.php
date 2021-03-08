@@ -24,17 +24,25 @@
           <div class="content bg-white px-3 py-2 shadow-sm" style="border-radius: 0 0 10px 10px;">
             <div class="clearfix" v-for="message in messages">
               <ul style="padding: 0;">
-                <li style="list-style: none;">
+                <li v-if="message.receiver_id === signedUser.id" class="sents" style="list-style: none;">
                   <div class="chat-head">
                     @{{ message.user.name }} | <span class="text-muted">@{{isToday(message.created_at)}}</span>
                   </div>
-                  <div class="bg-primary py-2 px-3 text-white chat-body d-inline-block" style="border-radius: 0 15px 15px 15px;">
+                  <div class="bg-secondary py-2 px-3 text-white chat-body d-inline-block" style="border-radius: 0 15px 15px 15px;">
+                    @{{ message.message }}
+                  </div>
+                </li>
+                <li v-if="message.receiver_id != signedUser.id" class="replies float-right" style="list-style: none;">
+                  <div class="chat-head d-block">
+                    <p class="text-right mb-0">@{{ message.user.name }} | <span class="text-muted">@{{isToday(message.created_at)}}</span></p>
+                  </div>
+                  <div class="bg-primary py-2 px-3 text-white chat-body" style="border-radius: 15px 0 15px 15px;">
                     @{{ message.message }}
                   </div>
                 </li>
               </ul>
             </div>
-            <div class="input-group">
+            <div class="input-group mt-3">
               <input type="text" name="message" class="form-control" placeholder="Type your message here..." v-model="newMessage" @keyup.enter="sendMessage">
               <button class="btn btn-primary" @click="sendMessage">Send</button>
             </div>

@@ -90,6 +90,7 @@ const app = new Vue({
                     user: response.data.user
                 });
             });
+            console.log(data.message.receiver_id);
         },
 
         sendMessage() {
