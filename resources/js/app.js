@@ -35,11 +35,14 @@ const app = new Vue({
 
     data: {
         messages: [],
+        users:[],
+        activeReceiver: null,
         newMessage: ''
     },
 
     created() {
-        this.fetchMessages();
+        // this.fetchMessages();
+        this.fetchUsers();
 
         Echo.private('chat')
             .listen('MessageSentEvent', (e) => {
@@ -58,9 +61,22 @@ const app = new Vue({
             });
         },
 
-        addMessage(message) {
+        fetchPrivateMessage(receiver_id) {
+          this.activeReceiver = receiver_id;
+          axios.get('/messages/'+receiver_id).then(response => {
+              this.messages = response.data;
+          });
+        },
+
+        fetchUsers() {
+          axios.get('/users').then(response => {
+            this.users = response.data;
+          });
+        },
+
+        addMessage(message, receiver_id) {
             axios.post('/messages', {
-                message
+                message, receiver_id
             }).then(response => {
                 this.messages.push({
                     message: response.data.message.message,
@@ -70,7 +86,7 @@ const app = new Vue({
         },
 
         sendMessage() {
-            this.addMessage(this.newMessage);
+            this.addMessage(this.newMessage, this.activeReceiver);
             this.newMessage = '';
         },
 

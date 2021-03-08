@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,7 +23,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::view('/chat', 'chat')->middleware('auth');
+Route::view('/chat/{id}', 'chat')->middleware('auth');
+Route::resource('users', UserController::class)->only([
+    'index'
+]);
 Route::resource('messages', MessageController::class)->only([
     'index',
-    'store'
+    'store',
+    'show'
 ]);

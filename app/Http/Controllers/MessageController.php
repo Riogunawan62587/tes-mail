@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Message;
+use App\Models\User;
 use Auth;
 use App\Events\MessageSentEvent;
 
@@ -45,7 +46,8 @@ class MessageController extends Controller
         $user = Auth::user();
 
         $message = $user->messages()->create([
-            'message' => $request->input('message')
+            'message' => $request->input('message'),
+            'receiver_id' => $request->receiver_id
         ]);
         // send event to listeners
         broadcast(new MessageSentEvent($message->load('user'), $user))->toOthers();
@@ -64,7 +66,13 @@ class MessageController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+
+        $message = Message::with('user')->where(['user_id' => auth()->id(), 'receiver_id' => $user->id])->orWhere(function($query) use($user){
+          $query->where(['user_id' => $user->id, 'receiver_id' => auth()->id()]);
+        })->get();
+
+        return $message;
     }
 
     /**

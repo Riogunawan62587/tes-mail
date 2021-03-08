@@ -1906,12 +1906,15 @@ var app = new Vue({
   el: '#app',
   data: {
     messages: [],
+    users: [],
+    activeReceiver: null,
     newMessage: ''
   },
   created: function created() {
     var _this = this;
 
-    this.fetchMessages();
+    // this.fetchMessages();
+    this.fetchUsers();
     Echo["private"]('chat').listen('MessageSentEvent', function (e) {
       _this.messages.push({
         message: e.message.message,
@@ -1928,20 +1931,36 @@ var app = new Vue({
         _this2.messages = response.data;
       });
     },
-    addMessage: function addMessage(message) {
+    fetchPrivateMessage: function fetchPrivateMessage(receiver_id) {
       var _this3 = this;
 
+      this.activeReceiver = receiver_id;
+      axios.get('/messages/' + receiver_id).then(function (response) {
+        _this3.messages = response.data;
+      });
+    },
+    fetchUsers: function fetchUsers() {
+      var _this4 = this;
+
+      axios.get('/users').then(function (response) {
+        _this4.users = response.data;
+      });
+    },
+    addMessage: function addMessage(message, receiver_id) {
+      var _this5 = this;
+
       axios.post('/messages', {
-        message: message
+        message: message,
+        receiver_id: receiver_id
       }).then(function (response) {
-        _this3.messages.push({
+        _this5.messages.push({
           message: response.data.message.message,
           user: response.data.user
         });
       });
     },
     sendMessage: function sendMessage() {
-      this.addMessage(this.newMessage);
+      this.addMessage(this.newMessage, this.activeReceiver);
       this.newMessage = '';
     },
     isToday: function isToday(date) {
