@@ -29,7 +29,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 var moment = require('moment');
 
-
 const app = new Vue({
     el: '#app',
 
@@ -37,12 +36,14 @@ const app = new Vue({
         messages: [],
         users:[],
         activeReceiver: null,
+        signedUser: null,
         newMessage: ''
     },
 
     created() {
         // this.fetchMessages();
         this.fetchUsers();
+        this.fetchSignedInUser();
 
         Echo.private('chat')
             .listen('MessageSentEvent', (e) => {
@@ -71,6 +72,12 @@ const app = new Vue({
         fetchUsers() {
           axios.get('/users').then(response => {
             this.users = response.data;
+          });
+        },
+
+        fetchSignedInUser() {
+          axios.get('/getSignedInUser').then(response => {
+            this.signedUser = response.data;
           });
         },
 

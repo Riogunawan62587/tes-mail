@@ -1908,6 +1908,7 @@ var app = new Vue({
     messages: [],
     users: [],
     activeReceiver: null,
+    signedUser: null,
     newMessage: ''
   },
   created: function created() {
@@ -1915,6 +1916,7 @@ var app = new Vue({
 
     // this.fetchMessages();
     this.fetchUsers();
+    this.fetchSignedInUser();
     Echo["private"]('chat').listen('MessageSentEvent', function (e) {
       _this.messages.push({
         message: e.message.message,
@@ -1946,14 +1948,21 @@ var app = new Vue({
         _this4.users = response.data;
       });
     },
-    addMessage: function addMessage(message, receiver_id) {
+    fetchSignedInUser: function fetchSignedInUser() {
       var _this5 = this;
+
+      axios.get('/getSignedInUser').then(function (response) {
+        _this5.signedUser = response.data;
+      });
+    },
+    addMessage: function addMessage(message, receiver_id) {
+      var _this6 = this;
 
       axios.post('/messages', {
         message: message,
         receiver_id: receiver_id
       }).then(function (response) {
-        _this5.messages.push({
+        _this6.messages.push({
           message: response.data.message.message,
           user: response.data.user
         });

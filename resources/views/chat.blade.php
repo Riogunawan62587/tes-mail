@@ -8,7 +8,9 @@
         <div class="col-md-12 bg-white shadow-sm rounded">
           <h2 class="p-3">User List</h2>
           <ul style="list-style: none; padding: 0;">
-            <li class="p-3 bg-light" v-for="user in users" :key="user.id" @click="fetchPrivateMessage(user.id)">@{{ user.name }}</li>
+            <li class="p-3 bg-light" v-for="friend in users" v-if="signedUser.id != friend.id" :key="friend.id" @click="fetchPrivateMessage(friend.id)">
+                @{{ friend.name }}
+            </li>
           </ul>
         </div>
       </div>
@@ -46,5 +48,4 @@
 @endsection
 
 @push('scripts')
-
 @endpush

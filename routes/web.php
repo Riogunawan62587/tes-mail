@@ -24,8 +24,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::view('/chat', 'chat')->middleware('auth');
 Route::view('/chat/{id}', 'chat')->middleware('auth');
+Route::get('/getSignedInUser', [UserController::class, 'getSignedInUser']);
 Route::resource('users', UserController::class)->only([
-    'index'
+    'index',
 ]);
 Route::resource('messages', MessageController::class)->only([
     'index',
