@@ -87,7 +87,7 @@
     </div>
     <!-- development version, includes helpful console warnings -->
     @stack('scripts')
-
+    <script src="https://unpkg.com/vue-chat-scroll@alpha/dist/vue-chat-scroll.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </body>
 

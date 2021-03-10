@@ -19,7 +19,7 @@
           <div class="hide-scrollbar">
             <div class="container-fluid py-6">
 
-              <!-- Search -->
+              {{-- <!-- Search -->
               <form class="mb-6">
                 <div class="input-group">
                   <input type="text" class="form-control form-control-lg" placeholder="Search for messages or users..."
@@ -31,7 +31,7 @@
                   </div>
                 </div>
               </form>
-              <!-- Search -->
+              <!-- Search --> --}}
 
             </div>
           </div>
@@ -139,7 +139,7 @@
               <!-- Chat: Header -->
 
               <!-- Chat: Content-->
-              <div class="chat-content px-lg-8">
+              <div class="chat-content px-lg-8" v-chat-scroll>
                 <div class="container-xxl py-6 py-lg-10" v-for="message in messages">
 
                   <!-- Message -->
@@ -231,8 +231,11 @@
 
                 </div>
 
+                
+
                 <!-- Scroll to end -->
                 <div class="end-of-chat"></div>
+                <span class="text-muted" v-if="activeUser">@{{ friend.name }} is typing</span>
               </div>
               <!-- Chat: Content -->
 
@@ -245,8 +248,8 @@
                       <div class="input-group">
 
                         <input type="text" id="chat-id-1-input" name="message"
-                          class="form-control bg-transparent border-0" placeholder="Type your message here..."
-                          v-model="newMessage" @keyup.enter="sendMessage">
+                          class="form-control bg-transparent border-0 mb-4" placeholder="Type your message here..."
+                          v-model="newMessage" @keyup.enter="sendMessage" @keydown="sendTypingEvent">
 
                       </div>
 
@@ -254,7 +257,7 @@
 
                     <!-- Submit button -->
                     <div class="col-auto">
-                      <button class="btn btn-ico btn-primary rounded-circle" @click="sendMessage">
+                      <button class="btn btn-ico btn-primary rounded-circle mb-4" @click="sendMessage">
                         <span class="fe-send"></span>
                       </button>
                     </div>
@@ -264,13 +267,13 @@
               </div>
               <!-- Chat: Footer -->
 
-              <!-- Chat: DropzoneJS container -->
+              {{-- <!-- Chat: DropzoneJS container -->
               <div class="chat-files hide-scrollbar px-lg-8">
                 <div class="container-xxl">
                   <div class="dropzone-previews-js form-row py-4"></div>
                 </div>
               </div>
-              <!-- Chat: DropzoneJS container -->
+              <!-- Chat: DropzoneJS container --> --}}
 
 
 

@@ -8,6 +8,10 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+import Echo from 'laravel-echo';
+import VueChatScroll from 'vue-chat-scroll';
+Vue.use(VueChatScroll);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -34,10 +38,11 @@ const app = new Vue({
 
     data: {
         messages: [],
-        users:[],
+        users: [],
         activeReceiver: null,
         signedUser: null,
-        newMessage: ''
+        newMessage: '',
+        activeUser: false
     },
 
     created() {
@@ -52,7 +57,15 @@ const app = new Vue({
                     created_at: e.message.created_at,
                     user: e.user
                 });
-            });
+            })
+            .listenForWhisper('typing', user => {
+                this.activeUser = user;
+
+                setTimeout(() => {
+                    this.activeUser = false;
+                }, 3000);
+            })
+
     },
 
     methods: {
@@ -63,22 +76,22 @@ const app = new Vue({
         },
 
         fetchPrivateMessage(receiver_id) {
-          this.activeReceiver = receiver_id;
-          axios.get('/messages/'+receiver_id).then(response => {
-              this.messages = response.data;
-          });
+            this.activeReceiver = receiver_id;
+            axios.get('/messages/' + receiver_id).then(response => {
+                this.messages = response.data;
+            });
         },
 
         fetchUsers() {
-          axios.get('/users').then(response => {
-            this.users = response.data;
-          });
+            axios.get('/users').then(response => {
+                this.users = response.data;
+            });
         },
 
         fetchSignedInUser() {
-          axios.get('/getSignedInUser').then(response => {
-            this.signedUser = response.data;
-          });
+            axios.get('/getSignedInUser').then(response => {
+                this.signedUser = response.data;
+            });
         },
 
         addMessage(message, receiver_id) {
@@ -98,8 +111,19 @@ const app = new Vue({
             this.newMessage = '';
         },
 
+        sendTypingEvent() {
+            Echo.private('chat')
+                .whisper('typing', this.user);
+        },
+
         isToday(date) {
-            return moment(String(date)).format('MM-DD-YYYY hh:mm');
+            return moment(String(date)).format('hh:mm');
+        }
+    },
+
+    computed: {
+        groupedDays() {
+            return groupBy(day => day.date.toDateString());
         }
     }
 });
