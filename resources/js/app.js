@@ -8,7 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
-import Echo from 'laravel-echo';
+
 import VueChatScroll from 'vue-chat-scroll';
 Vue.use(VueChatScroll);
 
@@ -41,8 +41,7 @@ const app = new Vue({
         users: [],
         activeReceiver: null,
         signedUser: null,
-        newMessage: '',
-        activeUser: false
+        newMessage: ''
     },
 
     created() {
@@ -57,15 +56,7 @@ const app = new Vue({
                     created_at: e.message.created_at,
                     user: e.user
                 });
-            })
-            .listenForWhisper('typing', user => {
-                this.activeUser = user;
-
-                setTimeout(() => {
-                    this.activeUser = false;
-                }, 3000);
-            })
-
+            });
     },
 
     methods: {
@@ -111,19 +102,8 @@ const app = new Vue({
             this.newMessage = '';
         },
 
-        sendTypingEvent() {
-            Echo.private('chat')
-                .whisper('typing', this.user);
-        },
-
         isToday(date) {
-            return moment(String(date)).format('hh:mm');
-        }
-    },
-
-    computed: {
-        groupedDays() {
-            return groupBy(day => day.date.toDateString());
+            return moment(String(date)).format('MM-DD-YYYY hh:mm');
         }
     }
 });

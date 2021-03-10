@@ -1877,9 +1877,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
-/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-chat-scroll */ "./node_modules/vue-chat-scroll/dist/index.js");
-/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chat-scroll */ "./node_modules/vue-chat-scroll/dist/index.js");
+/* harmony import */ var vue_chat_scroll__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_chat_scroll__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -1889,8 +1888,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
 
-
-Vue.use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_1___default()));
+Vue.use((vue_chat_scroll__WEBPACK_IMPORTED_MODULE_0___default()));
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -1917,8 +1915,7 @@ var app = new Vue({
     users: [],
     activeReceiver: null,
     signedUser: null,
-    newMessage: '',
-    activeUser: false
+    newMessage: ''
   },
   created: function created() {
     var _this = this;
@@ -1926,17 +1923,12 @@ var app = new Vue({
     // this.fetchMessages();
     this.fetchUsers();
     this.fetchSignedInUser();
-    laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default.private('chat').listen('MessageSentEvent', function (e) {
+    Echo["private"]('chat').listen('MessageSentEvent', function (e) {
       _this.messages.push({
         message: e.message.message,
         created_at: e.message.created_at,
         user: e.user
       });
-    }).listenForWhisper('typing', function (user) {
-      _this.activeUser = user;
-      setTimeout(function () {
-        _this.activeUser = false;
-      }, 3000);
     });
   },
   methods: {
@@ -1987,11 +1979,8 @@ var app = new Vue({
       this.addMessage(this.newMessage, this.activeReceiver);
       this.newMessage = '';
     },
-    sendTypingEvent: function sendTypingEvent() {
-      laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default.private('chat').whisper('typing', this.user);
-    },
     isToday: function isToday(date) {
-      return moment(String(date)).format('hh:mm');
+      return moment(String(date)).format('MM-DD-YYYY hh:mm');
     }
   }
 });
