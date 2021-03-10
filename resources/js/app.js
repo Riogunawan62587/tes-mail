@@ -63,8 +63,6 @@ const app = new Vue({
         fetchMessages() {
             axios.get('/messages').then(response => {
                 this.messages = response.data;
-                // this.users = response.data;
-
             })
         },
 
@@ -72,7 +70,6 @@ const app = new Vue({
             this.activeReceiver = receiver_id;
             axios.get('/messages/' + receiver_id).then(response => {
                 this.messages = response.data;
-                // this.data_users = response.data;
             })
         },
 
@@ -102,7 +99,7 @@ const app = new Vue({
 
         sendMessage() {
             this.addMessage(this.newMessage, this.activeReceiver);
-            this.newMessage = ' ';
+            this.newMessage = '';
         },
 
         isToday(date) {

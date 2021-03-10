@@ -49,8 +49,8 @@
               <!-- Title -->
 
               <!-- Chats -->
-              <nav class="nav d-block list-discussions-js mb-n6" v-for="friend in users"
-                v-if="signedUser.id != friend.id" :key="friend.id" @click="fetchPrivateMessage(friend.id)">
+              <nav class="nav d-block list-discussions-js mb-n6 mb-1" v-for="friend in users"
+                v-if="signedUser.id != friend.id" :key="friend.id" @click="fetchPrivateMessage(friend.id)"> 
                 <!-- Chat link -->
                 <a class="text-reset nav-link p-0 mb-6" href="#">
                   <div class="card card-active-listener">
@@ -121,13 +121,15 @@
                     <!-- Chat photo -->
                     <div class="col-6 col-xl-6">
                       <div class="media text-center text-xl-left">
-                        <div class="avatar avatar-sm d-none d-xl-inline-block mr-5">
+                        {{-- <div class="avatar avatar-sm d-none d-xl-inline-block mr-5">
                           <img src="{{asset('images/avatars/11.jpg')}}" class="avatar-img" alt="">
-                        </div>
+                        </div> --}}
 
                         <div class="media-body align-self-center text-truncate">
-                          <h6 class="text-truncate mb-n1"> @{{ friend.name }}</h6>
-                          <small class="text-muted">Online</small>
+                          <h2 class="font-bold mb-6">Chat Rooms</h2>
+
+                          {{-- <h6 class="text-truncate mb-n1"> @{{ friend.name }}</h6>
+                          <small class="text-muted">Online</small> --}}
                         </div>
                       </div>
                     </div>
@@ -212,6 +214,7 @@
 
                           <!-- Message: content -->
                           <div class="message-content bg-primary text-white">
+                            <div class="h5 text-white">@{{ message.user.name }}</div>
                             <div> @{{ message.message }}</div>
 
                             <div class="mt-1">
@@ -244,7 +247,7 @@
                     <div class="col">
                       <div class="input-group">
                         <input type="text" id="chat-id-1-input" name="message"
-                          class="form-control bg-light border-0 mb-4 input-group" placeholder="Type your message here..."
+                          class="form-control bg-light border-0 mb-4 input-group text-black-50" placeholder="Type your message here..."
                           v-model="newMessage" @keyup.enter="sendMessage">
                       </div>
                     </div>

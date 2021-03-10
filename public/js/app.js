@@ -1936,7 +1936,7 @@ var app = new Vue({
       var _this2 = this;
 
       axios.get('/messages').then(function (response) {
-        _this2.messages = response.data; // this.users = response.data;
+        _this2.messages = response.data;
       });
     },
     fetchPrivateMessage: function fetchPrivateMessage(receiver_id) {
@@ -1944,7 +1944,7 @@ var app = new Vue({
 
       this.activeReceiver = receiver_id;
       axios.get('/messages/' + receiver_id).then(function (response) {
-        _this3.messages = response.data; // this.data_users = response.data;
+        _this3.messages = response.data;
       });
     },
     fetchUsers: function fetchUsers() {
@@ -1976,7 +1976,7 @@ var app = new Vue({
     },
     sendMessage: function sendMessage() {
       this.addMessage(this.newMessage, this.activeReceiver);
-      this.newMessage = ' ';
+      this.newMessage = '';
     },
     isToday: function isToday(date) {
       return moment(String(date)).format('hh:mm');
