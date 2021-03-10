@@ -86,14 +86,14 @@
   <!-- Sidebar -->
 
   <!-- Main Content -->
-  <div class="main" data-mobile-height="" v-for="friend in users" v-if="signedUser.id != friend.id" :key="friend.id">
+  <div class="main" data-mobile-height="">
 
     <!-- Default Page -->
     <div class="chat flex-column">
       <div class="container-xxl mt-4">
 
         <!-- Main Content -->
-        <div class="main main-visible" data-mobile-height="">
+        <div class="main main-visible" data-mobile-height="" v-for="friend in users" v-if="signedUser.id != friend.id" :key="friend.id">
 
           <!-- Chat -->
           <div id="chat-1" class="chat dropzone-form-js">
@@ -140,12 +140,12 @@
 
               <!-- Chat: Content-->
               <div class="chat-content px-lg-8" v-chat-scroll>
-                <div class="container-xxl py-6 py-lg-10" v-for="message in messages">
+                <div class="container-xxl py-6 py-lg-10 clearfix" v-for="message in messages">
 
                   <!-- Message -->
                   <div class="message sents" v-if="message.receiver_id === signedUser.id">
                     <!-- Avatar -->
-                    <a class="avatar avatar-sm mr-4 mr-lg-5" href="chat-1.html#"
+                    <a class="avatar avatar-sm mr-4 mr-lg-5" href="#"
                       data-chat-sidebar-toggle="#chat-1-user-profile">
                       <img class="avatar-img" src="{{asset('images/avatars/11.jpg')}}" alt="">
                     </a>
@@ -198,7 +198,7 @@
                   <!-- Message -->
                   <div class="message message-right replies" v-if="message.receiver_id != signedUser.id">
                     <!-- Avatar -->
-                    <a class="avatar avatar-sm ml-4 ml-lg-5 d-none d-lg-block" href="chat-1.html#"
+                    <a class="avatar avatar-sm ml-4 ml-lg-5 d-none d-lg-block" href="#"
                       data-chat-sidebar-toggle="#chat-1-user-profile">
                       <img class="avatar-img" src="{{asset('images/avatars/11.jpg')}}" alt="">
                     </a>
@@ -243,23 +243,19 @@
                   <div class="form-row align-items-center">
                     <div class="col">
                       <div class="input-group">
-
                         <input type="text" id="chat-id-1-input" name="message"
-                          class="form-control bg-transparent border-0" placeholder="Type your message here..."
+                          class="form-control bg-light border-0 mb-4 input-group" placeholder="Type your message here..."
                           v-model="newMessage" @keyup.enter="sendMessage">
-
                       </div>
-
                     </div>
 
                     <!-- Submit button -->
                     <div class="col-auto">
-                      <button class="btn btn-ico btn-primary rounded-circle" @click="sendMessage">
-                        <span class="fe-send"></span>
+                      <button class="btn btn-ico btn-primary rounded-circle mb-4" @click="sendMessage"><img src="{{asset('images/icon.png')}}" class="rounded-circle mr-4" style="height: 24px">
                       </button>
                     </div>
-
                   </div>
+
                 </div>
               </div>
               <!-- Chat: Footer -->

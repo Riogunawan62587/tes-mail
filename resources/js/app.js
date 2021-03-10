@@ -38,10 +38,10 @@ const app = new Vue({
 
     data: {
         messages: [],
+        newMessage: '',
         users: [],
         activeReceiver: null,
-        signedUser: null,
-        newMessage: ''
+        signedUser: null
     },
 
     created() {
@@ -63,26 +63,29 @@ const app = new Vue({
         fetchMessages() {
             axios.get('/messages').then(response => {
                 this.messages = response.data;
-            });
+                // this.users = response.data;
+
+            })
         },
 
         fetchPrivateMessage(receiver_id) {
             this.activeReceiver = receiver_id;
             axios.get('/messages/' + receiver_id).then(response => {
                 this.messages = response.data;
-            });
+                // this.data_users = response.data;
+            })
         },
 
         fetchUsers() {
             axios.get('/users').then(response => {
                 this.users = response.data;
-            });
+            })
         },
 
         fetchSignedInUser() {
             axios.get('/getSignedInUser').then(response => {
                 this.signedUser = response.data;
-            });
+            })
         },
 
         addMessage(message, receiver_id) {
@@ -94,16 +97,16 @@ const app = new Vue({
                     user: response.data.user
                 });
             });
-            console.log(data.message.receiver_id);
+            // console.log(data.message.receiver_id);
         },
 
         sendMessage() {
             this.addMessage(this.newMessage, this.activeReceiver);
-            this.newMessage = '';
+            this.newMessage = ' ';
         },
 
         isToday(date) {
-            return moment(String(date)).format('MM-DD-YYYY hh:mm');
+            return moment(String(date)).format('hh:mm');
         }
     }
 });
