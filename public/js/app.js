@@ -2019,16 +2019,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       messages: [],
-      newMessage: '',
+      newMessage: "",
       users: [],
       activeReceiver: null,
       signedUser: null,
       typingFriend: false,
-      typingClock: null
+      typingClock: null,
+      temp: {
+        old_unique_date: null
+      }
     };
   },
   created: function created() {
@@ -2036,7 +2108,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.fetchUsers();
     this.fetchSignedInUser();
-    Echo["private"]('chat').listen('MessageSentEvent', function (e) {
+    Echo["private"]("chat").listen("MessageSentEvent", function (e) {
       _this.messages.push({
         message: e.message.message,
         created_at: e.message.created_at,
@@ -2044,7 +2116,7 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       setTimeout(_this.scrollToEnd, 100);
-    }).listenForWhisper('typing', function (e) {
+    }).listenForWhisper("typing", function (e) {
       // console.log(e.user);
       if (e.user.id === _this.signedUser.id) {
         _this.typingFriend = true;
@@ -2058,7 +2130,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchMessages: function fetchMessages() {
       var _this2 = this;
 
-      axios.get('/messages').then(function (response) {
+      axios.get("/messages").then(function (response) {
         _this2.messages = response.data;
       });
     },
@@ -2066,7 +2138,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       this.fetchActiveReceiver(receiver_id);
-      axios.get('api/messages').then(function (response) {
+      axios.get("api/messages").then(function (response) {
         _this3.messages = response.data;
         _this3.messages = _this3.messages.filter(function (message) {
           return message.user_id === _this3.activeReceiver.id && message.receiver_id === _this3.signedUser.id || message.user_id === _this3.signedUser.id && message.receiver_id === _this3.activeReceiver.id;
@@ -2078,14 +2150,14 @@ __webpack_require__.r(__webpack_exports__);
     fetchUsers: function fetchUsers() {
       var _this4 = this;
 
-      axios.get('/users').then(function (response) {
+      axios.get("/users").then(function (response) {
         _this4.users = response.data;
       });
     },
     fetchSignedInUser: function fetchSignedInUser() {
       var _this5 = this;
 
-      axios.get('/getSignedInUser').then(function (response) {
+      axios.get("/getSignedInUser").then(function (response) {
         _this5.signedUser = response.data;
       });
     },
@@ -2097,33 +2169,39 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     scrollToEnd: function scrollToEnd() {
-      document.getElementById('message-box').scrollTo(0, 9999999);
+      document.getElementById("message-box").scrollTo(0, 9999999);
     },
     addMessage: function addMessage(message, receiver_id, user_id) {
-      var _this7 = this;
-
-      axios.post('/api/messages', {
+      axios.post("/api/messages", {
         message: message,
         receiver_id: receiver_id,
         user_id: user_id
-      }).then(function (response) {
-        _this7.messages.push({
-          message: response.data.message.message,
-          user: response.data.user
-        });
       });
     },
     sendMessage: function sendMessage() {
       this.addMessage(this.newMessage, this.activeReceiver.id, this.signedUser.id);
-      this.newMessage = '';
+      this.newMessage = "";
     },
     onTyping: function onTyping() {
-      Echo["private"]('chat').whisper('typing', {
+      Echo["private"]("chat").whisper("typing", {
         user: this.activeReceiver
       });
     },
     timeFormat: function timeFormat(date) {
-      return moment(String(date)).format('HH:mm');
+      return moment(String(date)).format("HH:mm");
+    },
+    groupByDate: function groupByDate(date) {
+      var old_date = this.temp.old_unique_date;
+      var new_date = new Date(date).getDate();
+
+      if (old_date != new_date) {
+        this.temp.old_unique_date = new_date;
+        var day = ("0" + new Date(date).getDate()).slice(-2);
+        var month = ("0" + (new Date(date).getMonth() + 1)).slice(-2);
+        var year = ("0" + new Date(date).getFullYear()).slice(-2);
+        var date_data = day + "/" + month + "/" + year;
+        return date_data;
+      }
     }
   }
 });
@@ -6683,7 +6761,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nbody{\n  margin-top:20px\n}\n.chat-online {\n  color: #34ce57\n}\n.chat-offline {\n  color: #e4606d\n}\n.chat-messages {\n  display: flex;\n  flex-direction: column;\n  max-height: 800px;\n  overflow-y: scroll\n}\n.chat-message-left,\n.chat-message-right {\n  display: flex;\n  flex-shrink: 0\n}\n.chat-message-left {\n  margin-right: auto\n}\n.chat-message-right {\n  flex-direction: row-reverse;\n  margin-left: auto\n}\n.py-3 {\n  padding-top: 1rem!important;\n  padding-bottom: 1rem!important;\n}\n.px-4 {\n  padding-right: 1.5rem!important;\n  padding-left: 1.5rem!important;\n}\n.flex-grow-0 {\n  flex-grow: 0!important;\n}\n.border-top {\n  border-top: 1px solid #dee2e6!important;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nbody {\r\n  margin-top: 20px;\n}\n.chat-online {\r\n  color: #34ce57;\n}\n.chat-offline {\r\n  color: #e4606d;\n}\n.chat-messages {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-height: 800px;\r\n  overflow-y: scroll;\n}\n.chat-message-left,\r\n.chat-message-right {\r\n  display: flex;\r\n  flex-shrink: 0;\n}\n.chat-message-left {\r\n  margin-right: auto;\n}\n.chat-message-right {\r\n  flex-direction: row-reverse;\r\n  margin-left: auto;\n}\n.py-3 {\r\n  padding-top: 1rem !important;\r\n  padding-bottom: 1rem !important;\n}\n.px-4 {\r\n  padding-right: 1.5rem !important;\r\n  padding-left: 1.5rem !important;\n}\n.flex-grow-0 {\r\n  flex-grow: 0 !important;\n}\n.border-top {\r\n  border-top: 1px solid #dee2e6 !important;\n}\n.date-divider {\r\n  text-align: center;\r\n  color: white;\r\n  background-color: rgb(129, 129, 129);\r\n  border-radius: 10px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -62509,6 +62587,15 @@ var render = function() {
                 },
                 _vm._l(_vm.messages, function(message) {
                   return _c("div", { staticClass: "message-warp" }, [
+                    _c("div", { staticClass: "container col-2" }, [
+                      _c("div", {
+                        staticClass: "date-divider",
+                        domProps: {
+                          innerHTML: _vm._s(_vm.groupByDate(message.created_at))
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
                     message.receiver_id !== _vm.signedUser.id
                       ? _c("div", { staticClass: "chat-message-right pb-4" }, [
                           _c("div", [
@@ -62530,7 +62617,9 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  _vm._s(_vm.timeFormat(message.created_at))
+                                  "\n                      " +
+                                    _vm._s(_vm.timeFormat(message.created_at)) +
+                                    "\n                    "
                                 )
                               ]
                             )
@@ -62579,7 +62668,9 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  _vm._s(_vm.timeFormat(message.created_at))
+                                  "\n                      " +
+                                    _vm._s(_vm.timeFormat(message.created_at)) +
+                                    "\n                    "
                                 )
                               ]
                             )
@@ -62595,7 +62686,13 @@ var render = function() {
                               _c(
                                 "div",
                                 { staticClass: "font-weight-bold mb-1" },
-                                [_vm._v(_vm._s(message.user.name))]
+                                [
+                                  _vm._v(
+                                    "\n                      " +
+                                      _vm._s(message.user.name) +
+                                      "\n                    "
+                                  )
+                                ]
                               ),
                               _vm._v(
                                 "\n                    " +
@@ -62652,7 +62749,7 @@ var render = function() {
                     staticClass: "btn btn-primary",
                     on: { click: _vm.sendMessage }
                   },
-                  [_vm._v("Send")]
+                  [_vm._v("\n                Send\n              ")]
                 )
               ])
             ])
@@ -62684,7 +62781,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "small" }, [
       _c("span", { staticClass: "fas fa-circle chat-online" }),
-      _vm._v("Online")
+      _vm._v("Online\n                ")
     ])
   },
   function() {
