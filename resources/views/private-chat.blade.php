@@ -9,13 +9,9 @@
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <div id="app">
-    <private-chat></private-chat>
-  </div>
 
 
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="{{ asset('js/app.js') }}"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 

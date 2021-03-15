@@ -23,6 +23,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::view('/chat', 'chat')->middleware('auth');
+Route::view('/private-chat', 'private-chat')->middleware('auth');
 Route::view('/chat/{id}', 'chat')->middleware('auth');
 Route::get('/getSignedInUser', [UserController::class, 'getSignedInUser']);
 Route::get('/getActiveUser/{id}', [UserController::class, 'getActiveUser']);

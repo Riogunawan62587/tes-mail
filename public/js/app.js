@@ -2019,146 +2019,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2166,7 +2026,9 @@ __webpack_require__.r(__webpack_exports__);
       newMessage: '',
       users: [],
       activeReceiver: null,
-      signedUser: null
+      signedUser: null,
+      typingFriend: false,
+      typingClock: null
     };
   },
   created: function created() {
@@ -2180,6 +2042,16 @@ __webpack_require__.r(__webpack_exports__);
         created_at: e.message.created_at,
         user: e.user
       });
+
+      setTimeout(_this.scrollToEnd, 100);
+    }).listenForWhisper('typing', function (e) {
+      // console.log(e.user);
+      if (e.user.id === _this.signedUser.id) {
+        _this.typingFriend = true;
+        _this.typingClock = setTimeout(function () {
+          _this.typingFriend = false;
+        }, 3000);
+      }
     });
   },
   methods: {
@@ -2224,6 +2096,9 @@ __webpack_require__.r(__webpack_exports__);
         _this6.activeReceiver = response.data;
       });
     },
+    scrollToEnd: function scrollToEnd() {
+      document.getElementById('message-box').scrollTo(0, 9999999);
+    },
     addMessage: function addMessage(message, receiver_id, user_id) {
       var _this7 = this;
 
@@ -2242,8 +2117,13 @@ __webpack_require__.r(__webpack_exports__);
       this.addMessage(this.newMessage, this.activeReceiver.id, this.signedUser.id);
       this.newMessage = '';
     },
+    onTyping: function onTyping() {
+      Echo["private"]('chat').whisper('typing', {
+        user: this.activeReceiver
+      });
+    },
     timeFormat: function timeFormat(date) {
-      return moment(String(date)).format('hh:mm');
+      return moment(String(date)).format('HH:mm');
     }
   }
 });
@@ -6783,6 +6663,106 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 })));
 //# sourceMappingURL=bootstrap.js.map
 
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\nbody{\n  margin-top:20px\n}\n.chat-online {\n  color: #34ce57\n}\n.chat-offline {\n  color: #e4606d\n}\n.chat-messages {\n  display: flex;\n  flex-direction: column;\n  max-height: 800px;\n  overflow-y: scroll\n}\n.chat-message-left,\n.chat-message-right {\n  display: flex;\n  flex-shrink: 0\n}\n.chat-message-left {\n  margin-right: auto\n}\n.chat-message-right {\n  flex-direction: row-reverse;\n  margin-left: auto\n}\n.py-3 {\n  padding-top: 1rem!important;\n  padding-bottom: 1rem!important;\n}\n.px-4 {\n  padding-right: 1.5rem!important;\n  padding-left: 1.5rem!important;\n}\n.flex-grow-0 {\n  flex-grow: 0!important;\n}\n.border-top {\n  border-top: 1px solid #dee2e6!important;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/api.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+  \*****************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+// eslint-disable-next-line func-names
+module.exports = function (cssWithMappingToString) {
+  var list = []; // return the list of modules as css string
+
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = cssWithMappingToString(item);
+
+      if (item[2]) {
+        return "@media ".concat(item[2], " {").concat(content, "}");
+      }
+
+      return content;
+    }).join("");
+  }; // import a list of modules into the list
+  // eslint-disable-next-line func-names
+
+
+  list.i = function (modules, mediaQuery, dedupe) {
+    if (typeof modules === "string") {
+      // eslint-disable-next-line no-param-reassign
+      modules = [[null, modules, ""]];
+    }
+
+    var alreadyImportedModules = {};
+
+    if (dedupe) {
+      for (var i = 0; i < this.length; i++) {
+        // eslint-disable-next-line prefer-destructuring
+        var id = this[i][0];
+
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+
+    for (var _i = 0; _i < modules.length; _i++) {
+      var item = [].concat(modules[_i]);
+
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (mediaQuery) {
+        if (!item[2]) {
+          item[2] = mediaQuery;
+        } else {
+          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+        }
+      }
+
+      list.push(item);
+    }
+  };
+
+  return list;
+};
 
 /***/ }),
 
@@ -61904,6 +61884,315 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrivateChat.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
+  \****************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var isOldIE = function isOldIE() {
+  var memo;
+  return function memorize() {
+    if (typeof memo === 'undefined') {
+      // Test for IE <= 9 as proposed by Browserhacks
+      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+      // Tests for existence of standard globals is to allow style-loader
+      // to operate correctly into non-standard environments
+      // @see https://github.com/webpack-contrib/style-loader/issues/177
+      memo = Boolean(window && document && document.all && !window.atob);
+    }
+
+    return memo;
+  };
+}();
+
+var getTarget = function getTarget() {
+  var memo = {};
+  return function memorize(target) {
+    if (typeof memo[target] === 'undefined') {
+      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
+
+      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+        try {
+          // This will throw an exception if access to iframe is blocked
+          // due to cross-origin restrictions
+          styleTarget = styleTarget.contentDocument.head;
+        } catch (e) {
+          // istanbul ignore next
+          styleTarget = null;
+        }
+      }
+
+      memo[target] = styleTarget;
+    }
+
+    return memo[target];
+  };
+}();
+
+var stylesInDom = [];
+
+function getIndexByIdentifier(identifier) {
+  var result = -1;
+
+  for (var i = 0; i < stylesInDom.length; i++) {
+    if (stylesInDom[i].identifier === identifier) {
+      result = i;
+      break;
+    }
+  }
+
+  return result;
+}
+
+function modulesToDom(list, options) {
+  var idCountMap = {};
+  var identifiers = [];
+
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var count = idCountMap[id] || 0;
+    var identifier = "".concat(id, " ").concat(count);
+    idCountMap[id] = count + 1;
+    var index = getIndexByIdentifier(identifier);
+    var obj = {
+      css: item[1],
+      media: item[2],
+      sourceMap: item[3]
+    };
+
+    if (index !== -1) {
+      stylesInDom[index].references++;
+      stylesInDom[index].updater(obj);
+    } else {
+      stylesInDom.push({
+        identifier: identifier,
+        updater: addStyle(obj, options),
+        references: 1
+      });
+    }
+
+    identifiers.push(identifier);
+  }
+
+  return identifiers;
+}
+
+function insertStyleElement(options) {
+  var style = document.createElement('style');
+  var attributes = options.attributes || {};
+
+  if (typeof attributes.nonce === 'undefined') {
+    var nonce =  true ? __webpack_require__.nc : 0;
+
+    if (nonce) {
+      attributes.nonce = nonce;
+    }
+  }
+
+  Object.keys(attributes).forEach(function (key) {
+    style.setAttribute(key, attributes[key]);
+  });
+
+  if (typeof options.insert === 'function') {
+    options.insert(style);
+  } else {
+    var target = getTarget(options.insert || 'head');
+
+    if (!target) {
+      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+    }
+
+    target.appendChild(style);
+  }
+
+  return style;
+}
+
+function removeStyleElement(style) {
+  // istanbul ignore if
+  if (style.parentNode === null) {
+    return false;
+  }
+
+  style.parentNode.removeChild(style);
+}
+/* istanbul ignore next  */
+
+
+var replaceText = function replaceText() {
+  var textStore = [];
+  return function replace(index, replacement) {
+    textStore[index] = replacement;
+    return textStore.filter(Boolean).join('\n');
+  };
+}();
+
+function applyToSingletonTag(style, index, remove, obj) {
+  var css = remove ? '' : obj.media ? "@media ".concat(obj.media, " {").concat(obj.css, "}") : obj.css; // For old IE
+
+  /* istanbul ignore if  */
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = replaceText(index, css);
+  } else {
+    var cssNode = document.createTextNode(css);
+    var childNodes = style.childNodes;
+
+    if (childNodes[index]) {
+      style.removeChild(childNodes[index]);
+    }
+
+    if (childNodes.length) {
+      style.insertBefore(cssNode, childNodes[index]);
+    } else {
+      style.appendChild(cssNode);
+    }
+  }
+}
+
+function applyToTag(style, options, obj) {
+  var css = obj.css;
+  var media = obj.media;
+  var sourceMap = obj.sourceMap;
+
+  if (media) {
+    style.setAttribute('media', media);
+  } else {
+    style.removeAttribute('media');
+  }
+
+  if (sourceMap && typeof btoa !== 'undefined') {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
+  } // For old IE
+
+  /* istanbul ignore if  */
+
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    while (style.firstChild) {
+      style.removeChild(style.firstChild);
+    }
+
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var singleton = null;
+var singletonCounter = 0;
+
+function addStyle(obj, options) {
+  var style;
+  var update;
+  var remove;
+
+  if (options.singleton) {
+    var styleIndex = singletonCounter++;
+    style = singleton || (singleton = insertStyleElement(options));
+    update = applyToSingletonTag.bind(null, style, styleIndex, false);
+    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+  } else {
+    style = insertStyleElement(options);
+    update = applyToTag.bind(null, style, options);
+
+    remove = function remove() {
+      removeStyleElement(style);
+    };
+  }
+
+  update(obj);
+  return function updateStyle(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
+        return;
+      }
+
+      update(obj = newObj);
+    } else {
+      remove();
+    }
+  };
+}
+
+module.exports = function (list, options) {
+  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+  // tags it will allow on a page
+
+  if (!options.singleton && typeof options.singleton !== 'boolean') {
+    options.singleton = isOldIE();
+  }
+
+  list = list || [];
+  var lastIdentifiers = modulesToDom(list, options);
+  return function update(newList) {
+    newList = newList || [];
+
+    if (Object.prototype.toString.call(newList) !== '[object Array]') {
+      return;
+    }
+
+    for (var i = 0; i < lastIdentifiers.length; i++) {
+      var identifier = lastIdentifiers[i];
+      var index = getIndexByIdentifier(identifier);
+      stylesInDom[index].references--;
+    }
+
+    var newLastIdentifiers = modulesToDom(newList, options);
+
+    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
+      var _identifier = lastIdentifiers[_i];
+
+      var _index = getIndexByIdentifier(_identifier);
+
+      if (stylesInDom[_index].references === 0) {
+        stylesInDom[_index].updater();
+
+        stylesInDom.splice(_index, 1);
+      }
+    }
+
+    lastIdentifiers = newLastIdentifiers;
+  };
+};
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue ***!
@@ -61956,15 +62245,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _PrivateChat_vue_vue_type_template_id_237378e0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PrivateChat.vue?vue&type=template&id=237378e0& */ "./resources/js/components/PrivateChat.vue?vue&type=template&id=237378e0&");
 /* harmony import */ var _PrivateChat_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PrivateChat.vue?vue&type=script&lang=js& */ "./resources/js/components/PrivateChat.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _PrivateChat_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PrivateChat.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__.default)(
   _PrivateChat_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
   _PrivateChat_vue_vue_type_template_id_237378e0___WEBPACK_IMPORTED_MODULE_0__.render,
   _PrivateChat_vue_vue_type_template_id_237378e0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -62011,6 +62302,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrivateChat.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrivateChat.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=style&index=0&lang=css&");
+
 
 /***/ }),
 
@@ -62112,527 +62416,247 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "layout shadow" }, [
-      _c("div", { staticClass: "sidebar" }, [
-        _c(
-          "div",
-          { staticClass: "tab-content h-100", attrs: { role: "tablist" } },
-          [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "tab-pane fade h-100 show active",
-                attrs: { id: "tab-content-dialogs", role: "tabpanel" }
-              },
-              [
-                _c("div", { staticClass: "d-flex flex-column h-100" }, [
-                  _c("div", { staticClass: "hide-scrollbar" }, [
-                    _c(
-                      "div",
-                      { staticClass: "container-fluid py-6" },
-                      [
-                        _c("h2", { staticClass: "font-bold mb-6" }, [
-                          _vm._v("User Lists")
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(_vm.users, function(friend) {
-                          return _vm.signedUser.id != friend.id
-                            ? _c(
-                                "nav",
-                                {
-                                  key: friend.id,
-                                  staticClass:
-                                    "nav d-block list-discussions-js mb-n6 mb-1",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.fetchPrivateMessage(friend.id)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "a",
-                                    {
-                                      staticClass:
-                                        "text-reset nav-link p-0 mb-6",
-                                      attrs: { href: "#" }
-                                    },
-                                    [
-                                      _c(
-                                        "div",
-                                        {
-                                          staticClass:
-                                            "card card-active-listener"
-                                        },
-                                        [
-                                          _c(
-                                            "div",
-                                            { staticClass: "card-body" },
-                                            [
-                                              _c(
-                                                "div",
-                                                { staticClass: "media" },
-                                                [
-                                                  _vm._m(1, true),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass:
-                                                        "media-body overflow-hidden"
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "div",
-                                                        {
-                                                          staticClass:
-                                                            "d-flex align-items-center"
-                                                        },
-                                                        [
-                                                          _c(
-                                                            "li",
-                                                            {
-                                                              staticClass:
-                                                                "text-truncate mb-0 mt-3 mr-auto"
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                " +
-                                                                  _vm._s(
-                                                                    friend.name
-                                                                  ) +
-                                                                  "\n                              "
-                                                              )
-                                                            ]
-                                                          )
-                                                        ]
-                                                      )
-                                                    ]
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  )
-                                ]
-                              )
-                            : _vm._e()
-                        })
-                      ],
-                      2
-                    )
-                  ])
-                ])
-              ]
-            )
-          ]
-        )
-      ]),
+  return _c("main", { staticClass: "content" }, [
+    _c("div", { staticClass: "container py-3" }, [
+      _c("h1", { staticClass: "h3 mb-3" }, [_vm._v("Messages")]),
       _vm._v(" "),
-      _c("div", { staticClass: "main", attrs: { "data-mobile-height": "" } }, [
-        _c("div", { staticClass: "chat flex-column" }, [
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "row g-0" }, [
           _c(
             "div",
-            { staticClass: "container-xxl mt-4" },
-            _vm._l(_vm.users, function(friend) {
-              return _vm.signedUser.id != friend.id
-                ? _c(
-                    "div",
-                    {
-                      key: friend.id,
-                      staticClass: "main main-visible",
-                      attrs: { "data-mobile-height": "" }
-                    },
-                    [
-                      _c(
-                        "div",
-                        {
-                          staticClass: "chat dropzone-form-js",
-                          attrs: { id: "chat-1" }
-                        },
-                        [
-                          _c("div", { staticClass: "chat-body" }, [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "chat-header border-bottom py-4 py-lg-6 px-lg-8"
-                              },
-                              [
-                                _c("div", { staticClass: "container-xxl" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "row align-items-center" },
-                                    [
-                                      _vm._m(2, true),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "col-6 col-xl-6" },
-                                        [
-                                          _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "media text-center text-xl-left"
-                                            },
-                                            [
-                                              _vm._m(3, true),
-                                              _vm._v(" "),
-                                              _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "media-body align-self-center text-truncate"
-                                                },
-                                                [
-                                                  _c(
-                                                    "h6",
-                                                    {
-                                                      staticClass:
-                                                        "text-truncate mb-n1"
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        _vm._s(friend.name)
-                                                      )
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "small",
-                                                    {
-                                                      staticClass: "text-muted"
-                                                    },
-                                                    [_vm._v("Online")]
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ]
-                                      )
-                                    ]
-                                  )
-                                ])
-                              ]
+            { staticClass: "col-12 col-lg-5 col-xl-3 border-right" },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._l(_vm.users, function(user) {
+                return _vm.signedUser.id != user.id
+                  ? _c(
+                      "a",
+                      {
+                        key: user.id,
+                        staticClass:
+                          "list-group-item list-group-item-action border-0",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.fetchPrivateMessage(user.id)
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "d-flex align-items-start" }, [
+                          _c("img", {
+                            staticClass: "rounded-circle mr-1",
+                            attrs: {
+                              src:
+                                "https://bootdey.com/img/Content/avatar/avatar5.png",
+                              alt: "Vanessa Tucker",
+                              width: "40",
+                              height: "40"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "flex-grow-1 ml-3" }, [
+                            _vm._v(
+                              "\n                " +
+                                _vm._s(user.name) +
+                                "\n                "
                             ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                directives: [
-                                  {
-                                    name: "chat-scroll",
-                                    rawName: "v-chat-scroll"
-                                  }
-                                ],
-                                staticClass: "chat-content px-lg-8"
-                              },
-                              [
-                                _vm._l(_vm.messages, function(message) {
-                                  return _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "container-xxl py-6 py-lg-10 clearfix"
-                                    },
-                                    [
-                                      message.receiver_id === _vm.signedUser.id
-                                        ? _c(
-                                            "div",
-                                            { staticClass: "message sents" },
-                                            [
-                                              _vm._m(4, true),
-                                              _vm._v(" "),
-                                              _c(
-                                                "div",
-                                                { staticClass: "message-body" },
-                                                [
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass: "message-row"
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "div",
-                                                        {
-                                                          staticClass:
-                                                            "d-flex align-items-center"
-                                                        },
-                                                        [
-                                                          _c(
-                                                            "div",
-                                                            {
-                                                              staticClass:
-                                                                "message-content bg-light"
-                                                            },
-                                                            [
-                                                              _c("div"),
-                                                              _vm._v(" "),
-                                                              _c("div", [
-                                                                _vm._v(
-                                                                  " " +
-                                                                    _vm._s(
-                                                                      message.message
-                                                                    )
-                                                                )
-                                                              ]),
-                                                              _vm._v(" "),
-                                                              _c(
-                                                                "div",
-                                                                {
-                                                                  staticClass:
-                                                                    "mt-1"
-                                                                },
-                                                                [
-                                                                  _c(
-                                                                    "small",
-                                                                    {
-                                                                      staticClass:
-                                                                        "opacity-65"
-                                                                    },
-                                                                    [
-                                                                      _vm._v(
-                                                                        _vm._s(
-                                                                          _vm.timeFormat(
-                                                                            message.created_at
-                                                                          )
-                                                                        )
-                                                                      )
-                                                                    ]
-                                                                  )
-                                                                ]
-                                                              )
-                                                            ]
-                                                          )
-                                                        ]
-                                                      )
-                                                    ]
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      message.receiver_id != _vm.signedUser.id
-                                        ? _c(
-                                            "div",
-                                            {
-                                              staticClass:
-                                                "message message-right replies"
-                                            },
-                                            [
-                                              _vm._m(5, true),
-                                              _vm._v(" "),
-                                              _c(
-                                                "div",
-                                                { staticClass: "message-body" },
-                                                [
-                                                  _c(
-                                                    "div",
-                                                    {
-                                                      staticClass: "message-row"
-                                                    },
-                                                    [
-                                                      _c(
-                                                        "div",
-                                                        {
-                                                          staticClass:
-                                                            "d-flex align-items-center justify-content-end"
-                                                        },
-                                                        [
-                                                          _c(
-                                                            "div",
-                                                            {
-                                                              staticClass:
-                                                                "message-content bg-primary text-white"
-                                                            },
-                                                            [
-                                                              _c(
-                                                                "div",
-                                                                {
-                                                                  staticClass:
-                                                                    "h5 text-white"
-                                                                },
-                                                                [
-                                                                  _vm._v(
-                                                                    _vm._s(
-                                                                      message
-                                                                        .user
-                                                                        .name
-                                                                    )
-                                                                  )
-                                                                ]
-                                                              ),
-                                                              _vm._v(" "),
-                                                              _c("div", [
-                                                                _vm._v(
-                                                                  " " +
-                                                                    _vm._s(
-                                                                      message.message
-                                                                    )
-                                                                )
-                                                              ]),
-                                                              _vm._v(" "),
-                                                              _c(
-                                                                "div",
-                                                                {
-                                                                  staticClass:
-                                                                    "mt-1"
-                                                                },
-                                                                [
-                                                                  _c(
-                                                                    "small",
-                                                                    {
-                                                                      staticClass:
-                                                                        "opacity-65"
-                                                                    },
-                                                                    [
-                                                                      _vm._v(
-                                                                        _vm._s(
-                                                                          _vm.timeFormat(
-                                                                            message.created_at
-                                                                          )
-                                                                        )
-                                                                      )
-                                                                    ]
-                                                                  )
-                                                                ]
-                                                              )
-                                                            ]
-                                                          )
-                                                        ]
-                                                      )
-                                                    ]
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        : _vm._e()
-                                    ]
-                                  )
-                                }),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "end-of-chat" })
-                              ],
-                              2
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "chat-footer border-top py-4 py-lg-6 px-lg-8"
-                              },
-                              [
-                                _c("div", { staticClass: "container-xxl" }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass: "form-row align-items-center"
-                                    },
-                                    [
-                                      _c("div", { staticClass: "col" }, [
-                                        _c(
-                                          "div",
-                                          { staticClass: "input-group" },
-                                          [
-                                            _c("input", {
-                                              directives: [
-                                                {
-                                                  name: "model",
-                                                  rawName: "v-model",
-                                                  value: _vm.newMessage,
-                                                  expression: "newMessage"
-                                                }
-                                              ],
-                                              staticClass:
-                                                "form-control bg-light border-0 mb-4 input-group text-black-50",
-                                              attrs: {
-                                                type: "text",
-                                                id: "chat-id-1-input",
-                                                name: "message",
-                                                placeholder:
-                                                  "Type your message here..."
-                                              },
-                                              domProps: {
-                                                value: _vm.newMessage
-                                              },
-                                              on: {
-                                                keyup: function($event) {
-                                                  if (
-                                                    !$event.type.indexOf(
-                                                      "key"
-                                                    ) &&
-                                                    _vm._k(
-                                                      $event.keyCode,
-                                                      "enter",
-                                                      13,
-                                                      $event.key,
-                                                      "Enter"
-                                                    )
-                                                  ) {
-                                                    return null
-                                                  }
-                                                  return _vm.sendMessage($event)
-                                                },
-                                                input: function($event) {
-                                                  if ($event.target.composing) {
-                                                    return
-                                                  }
-                                                  _vm.newMessage =
-                                                    $event.target.value
-                                                }
-                                              }
-                                            })
-                                          ]
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "col-auto" }, [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass:
-                                              "btn btn-ico btn-primary rounded-circle mb-4",
-                                            on: { click: _vm.sendMessage }
-                                          },
-                                          [
-                                            _c("img", {
-                                              staticClass:
-                                                "rounded-circle mr-4",
-                                              staticStyle: { height: "24px" },
-                                              attrs: { src: "/images/icon.png" }
-                                            })
-                                          ]
-                                        )
-                                      ])
-                                    ]
-                                  )
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _vm._m(6, true)
+                            _vm._m(1, true)
                           ])
-                        ]
-                      )
-                    ]
-                  )
-                : _vm._e()
-            }),
-            0
-          )
+                        ])
+                      ]
+                    )
+                  : _vm._e()
+              }),
+              _vm._v(" "),
+              _c("hr", { staticClass: "d-block d-lg-none mt-1 mb-0" })
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-12 col-lg-7 col-xl-9" }, [
+            _c(
+              "div",
+              { staticClass: "py-2 px-4 border-bottom d-none d-lg-block" },
+              [
+                _c("div", { staticClass: "d-flex align-items-center py-1" }, [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _vm.activeReceiver
+                    ? _c("div", { staticClass: "flex-grow-1 pl-3" }, [
+                        _c("strong", [_vm._v(_vm._s(_vm.activeReceiver.name))]),
+                        _vm._v(" "),
+                        _vm.typingFriend
+                          ? _c("div", { staticClass: "text-muted small" }, [
+                              _c("em", [_vm._v("Typing")])
+                            ])
+                          : _vm._e()
+                      ])
+                    : _c("div", { staticClass: "flex-grow-1 pl-3" }, [
+                        _c("strong", [_vm._v("No one is selected")])
+                      ])
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "position-relative" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "chat-messages p-4",
+                  attrs: { id: "message-box" }
+                },
+                _vm._l(_vm.messages, function(message) {
+                  return _c("div", { staticClass: "message-warp" }, [
+                    message.receiver_id !== _vm.signedUser.id
+                      ? _c("div", { staticClass: "chat-message-right pb-4" }, [
+                          _c("div", [
+                            _c("img", {
+                              staticClass: "rounded-circle mr-1",
+                              attrs: {
+                                src:
+                                  "https://bootdey.com/img/Content/avatar/avatar1.png",
+                                alt: "Chris Wood",
+                                width: "40",
+                                height: "40"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "text-muted small text-nowrap mt-2"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.timeFormat(message.created_at))
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "flex-shrink-1 bg-light rounded py-2 px-3 mr-3"
+                            },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "font-weight-bold mb-1" },
+                                [_vm._v("You")]
+                              ),
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(message.message) +
+                                  "\n                  "
+                              )
+                            ]
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    message.receiver_id === _vm.signedUser.id
+                      ? _c("div", { staticClass: "chat-message-left pb-4" }, [
+                          _c("div", [
+                            _c("img", {
+                              staticClass: "rounded-circle mr-1",
+                              attrs: {
+                                src:
+                                  "https://bootdey.com/img/Content/avatar/avatar3.png",
+                                alt: "Sharon Lessman",
+                                width: "40",
+                                height: "40"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "text-muted small text-nowrap mt-2"
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(_vm.timeFormat(message.created_at))
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "flex-shrink-1 bg-light rounded py-2 px-3 ml-3"
+                            },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "font-weight-bold mb-1" },
+                                [_vm._v(_vm._s(message.user.name))]
+                              ),
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(message.message) +
+                                  "\n                  "
+                              )
+                            ]
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                }),
+                0
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex-grow-0 py-3 px-4 border-top" }, [
+              _c("div", { staticClass: "input-group" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newMessage,
+                      expression: "newMessage"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Type your message" },
+                  domProps: { value: _vm.newMessage },
+                  on: {
+                    keydown: _vm.onTyping,
+                    keyup: function($event) {
+                      if (
+                        !$event.type.indexOf("key") &&
+                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                      ) {
+                        return null
+                      }
+                      return _vm.sendMessage($event)
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newMessage = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: { click: _vm.sendMessage }
+                  },
+                  [_vm._v("Send")]
+                )
+              ])
+            ])
+          ])
         ])
       ])
     ])
@@ -62643,135 +62667,40 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "tab-pane fade h-100",
-        attrs: { id: "tab-content-create-chat", role: "tabpanel" }
-      },
-      [
-        _c("div", { staticClass: "d-flex flex-column h-100" }, [
-          _c("div", { staticClass: "hide-scrollbar" }, [
-            _c("div", { staticClass: "container-fluid py-6" }, [
-              _c("form", { staticClass: "mb-6" }, [
-                _c("div", { staticClass: "input-group" }, [
-                  _c("input", {
-                    staticClass: "form-control form-control-lg",
-                    attrs: {
-                      type: "text",
-                      placeholder: "Search for messages or users...",
-                      "aria-label": "Search for messages or users..."
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-group-append" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "btn btn-lg btn-ico btn-secondary btn-minimal",
-                        attrs: { type: "submit" }
-                      },
-                      [_c("i", { staticClass: "fe-search" })]
-                    )
-                  ])
-                ])
-              ])
-            ])
-          ])
+    return _c("div", { staticClass: "px-4 d-none d-md-block" }, [
+      _c("div", { staticClass: "d-flex align-items-center" }, [
+        _c("div", { staticClass: "flex-grow-1" }, [
+          _c("input", {
+            staticClass: "form-control my-3",
+            attrs: { type: "text", placeholder: "Search..." }
+          })
         ])
-      ]
-    )
+      ])
+    ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "avatar mr-5" }, [
+    return _c("div", { staticClass: "small" }, [
+      _c("span", { staticClass: "fas fa-circle chat-online" }),
+      _vm._v("Online")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "position-relative" }, [
       _c("img", {
-        staticClass: "avatar-img",
-        attrs: { src: "/images/avatars/11.jpg", alt: "Bootstrap Themes" }
+        staticClass: "rounded-circle mr-1",
+        attrs: {
+          src: "https://bootdey.com/img/Content/avatar/avatar3.png",
+          alt: "Sharon Lessman",
+          width: "40",
+          height: "40"
+        }
       })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-3 d-xl-none" }, [
-      _c("ul", { staticClass: "list-inline mb-0" }, [
-        _c("li", { staticClass: "list-inline-item" }, [
-          _c(
-            "a",
-            {
-              staticClass: "text-muted px-0",
-              attrs: { href: "chat-1.html#", "data-chat": "open" }
-            },
-            [_c("i", { staticClass: "icon-md fe-chevron-left" })]
-          )
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "avatar avatar-sm d-none d-xl-inline-block mr-5" },
-      [
-        _c("img", {
-          staticClass: "avatar-img",
-          attrs: { src: "/images/avatars/11.jpg", alt: "" }
-        })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "avatar avatar-sm mr-4 mr-lg-5",
-        attrs: { href: "#", "data-chat-sidebar-toggle": "#chat-1-user-profile" }
-      },
-      [
-        _c("img", {
-          staticClass: "avatar-img",
-          attrs: { src: "/images/avatars/11.jpg", alt: "" }
-        })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "avatar avatar-sm ml-4 ml-lg-5 d-none d-lg-block",
-        attrs: { href: "#", "data-chat-sidebar-toggle": "#chat-1-user-profile" }
-      },
-      [
-        _c("img", {
-          staticClass: "avatar-img",
-          attrs: { src: "/images/avatars/11.jpg", alt: "" }
-        })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "chat-files hide-scrollbar px-lg-8" }, [
-      _c("div", { staticClass: "container-xxl" }, [
-        _c("div", { staticClass: "dropzone-previews-js form-row py-4" })
-      ])
     ])
   }
 ]
@@ -74924,6 +74853,18 @@ Vue.compile = compileToFunctions;
 /******/ 	// It's empty as some runtime module handles the default behavior
 /******/ 	__webpack_require__.x = x => {};
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports

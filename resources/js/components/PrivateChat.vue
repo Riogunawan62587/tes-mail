@@ -1,280 +1,140 @@
+<style type="text/css">
+  body{
+    margin-top:20px
+  }
+
+  .chat-online {
+    color: #34ce57
+  }
+
+  .chat-offline {
+    color: #e4606d
+  }
+
+  .chat-messages {
+    display: flex;
+    flex-direction: column;
+    max-height: 800px;
+    overflow-y: scroll
+  }
+
+  .chat-message-left,
+  .chat-message-right {
+    display: flex;
+    flex-shrink: 0
+  }
+
+  .chat-message-left {
+    margin-right: auto
+  }
+
+  .chat-message-right {
+    flex-direction: row-reverse;
+    margin-left: auto
+  }
+  .py-3 {
+    padding-top: 1rem!important;
+    padding-bottom: 1rem!important;
+  }
+  .px-4 {
+    padding-right: 1.5rem!important;
+    padding-left: 1.5rem!important;
+  }
+  .flex-grow-0 {
+    flex-grow: 0!important;
+  }
+  .border-top {
+    border-top: 1px solid #dee2e6!important;
+  }
+</style>
+
 <template>
-  <div>
-    <div class="layout shadow">
+  <main class="content">
+    <div class="container py-3">
 
-      <!-- Sidebar -->
-      <div class="sidebar">
-        <div class="tab-content h-100" role="tablist">
-          <div class="tab-pane fade h-100" id="tab-content-create-chat" role="tabpanel">
-            <div class="d-flex flex-column h-100">
-              <div class="hide-scrollbar">
-                <div class="container-fluid py-6">
-                  <!-- Search -->
-                  <form class="mb-6">
-                    <div class="input-group">
-                      <input type="text" class="form-control form-control-lg" placeholder="Search for messages or users..."
-                        aria-label="Search for messages or users...">
-                      <div class="input-group-append">
-                        <button class="btn btn-lg btn-ico btn-secondary btn-minimal" type="submit">
-                          <i class="fe-search"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                  <!-- Search -->
+      <h1 class="h3 mb-3">Messages</h1>
+
+      <div class="card">
+        <div class="row g-0">
+          <div class="col-12 col-lg-5 col-xl-3 border-right">
+
+            <div class="px-4 d-none d-md-block">
+              <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                  <input type="text" class="form-control my-3" placeholder="Search...">
                 </div>
               </div>
             </div>
+
+            <a href="#" class="list-group-item list-group-item-action border-0" v-for="user in users" v-if="signedUser.id != user.id" v-bind:key="user.id" @click="fetchPrivateMessage(user.id)">
+              <!-- <div class="badge bg-success float-right">5</div> -->
+              <div class="d-flex align-items-start">
+                <img src="https://bootdey.com/img/Content/avatar/avatar5.png" class="rounded-circle mr-1" alt="Vanessa Tucker" width="40" height="40">
+                <div class="flex-grow-1 ml-3">
+                  {{ user.name }}
+                  <div class="small"><span class="fas fa-circle chat-online"></span>Online</div>
+                </div>
+              </div>
+            </a>
+            <hr class="d-block d-lg-none mt-1 mb-0">
           </div>
-
-          <div class="tab-pane fade h-100 show active" id="tab-content-dialogs" role="tabpanel">
-            <div class="d-flex flex-column h-100">
-              <div class="hide-scrollbar">
-                <div class="container-fluid py-6">
-                  <!-- Title -->
-                  <h2 class="font-bold mb-6">User Lists</h2>
-                  <!-- Title -->
-                  <!-- Chats -->
-                  <nav class="nav d-block list-discussions-js mb-n6 mb-1" v-for="friend in users"
-                    v-if="signedUser.id != friend.id" :key="friend.id" @click="fetchPrivateMessage(friend.id)">
-                    <!-- Chat link -->
-                    <a class="text-reset nav-link p-0 mb-6" href="#">
-                      <div class="card card-active-listener">
-                        <div class="card-body">
-                          <div class="media">
-                            <div class="avatar mr-5">
-                              <img class="avatar-img" src="/images/avatars/11.jpg" alt="Bootstrap Themes">
-                            </div>
-                            <div class="media-body overflow-hidden">
-                              <div class="d-flex align-items-center">
-                                <li class="text-truncate mb-0 mt-3 mr-auto">
-                                  {{ friend.name }}
-                                </li>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                    <!-- Chat link -->
-                  </nav>
-                  <!-- Chats -->
+          <div class="col-12 col-lg-7 col-xl-9">
+            <div class="py-2 px-4 border-bottom d-none d-lg-block">
+              <div class="d-flex align-items-center py-1">
+                <div class="position-relative">
+                  <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                </div>
+                <div class="flex-grow-1 pl-3" v-if="activeReceiver">
+                  <strong>{{ activeReceiver.name }}</strong>
+                  <div class="text-muted small" v-if="typingFriend"><em>Typing</em></div>
+                </div>
+                <div class="flex-grow-1 pl-3" v-else>
+                  <strong>No one is selected</strong>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <!-- Sidebar -->
 
-      <!-- Main Content -->
-      <div class="main" data-mobile-height="">
+            <div class="position-relative">
+              <div class="chat-messages p-4" id="message-box">
 
-        <!-- Default Page -->
-        <div class="chat flex-column">
-          <div class="container-xxl mt-4">
-
-            <!-- Main Content -->
-            <div class="main main-visible" data-mobile-height="" v-for="friend in users" v-if="signedUser.id != friend.id" :key="friend.id">
-
-              <!-- Chat -->
-              <div id="chat-1" class="chat dropzone-form-js">
-
-                <!-- Chat: body -->
-                <div class="chat-body">
-
-                  <!-- Chat: Header -->
-                  <div class="chat-header border-bottom py-4 py-lg-6 px-lg-8">
-                    <div class="container-xxl">
-                      <div class="row align-items-center">
-
-                        <!-- Close chat(mobile) -->
-                        <div class="col-3 d-xl-none">
-                          <ul class="list-inline mb-0">
-                            <li class="list-inline-item">
-                              <a class="text-muted px-0" href="chat-1.html#" data-chat="open">
-                                <i class="icon-md fe-chevron-left"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-
-                        <!-- Chat photo -->
-                        <div class="col-6 col-xl-6">
-                          <div class="media text-center text-xl-left">
-                            <div class="avatar avatar-sm d-none d-xl-inline-block mr-5">
-                              <img src="/images/avatars/11.jpg" class="avatar-img" alt="">
-                            </div>
-
-                            <div class="media-body align-self-center text-truncate">
-                              <!-- <h2 class="font-bold mb-6">Chat Rooms</h2> -->
-
-                              <h6 class="text-truncate mb-n1">{{ friend.name }}</h6>
-                              <small class="text-muted">Online</small>
-                            </div>
-                          </div>
-                        </div>
-
-                      </div><!-- .row -->
-
+                <div class="message-warp" v-for="message in messages">
+                  <div class="chat-message-right pb-4" v-if="message.receiver_id !== signedUser.id">
+                    <div>
+                      <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+                      <div class="text-muted small text-nowrap mt-2">{{timeFormat(message.created_at)}}</div>
+                    </div>
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                      <div class="font-weight-bold mb-1">You</div>
+                      {{ message.message }}
                     </div>
                   </div>
-                  <!-- Chat: Header -->
 
-                  <!-- Chat: Content-->
-                  <div class="chat-content px-lg-8" v-chat-scroll>
-                    <div class="container-xxl py-6 py-lg-10 clearfix" v-for="message in messages">
-
-                      <!-- Message -->
-                      <div class="message sents" v-if="message.receiver_id === signedUser.id">
-                        <!-- Avatar -->
-                        <a class="avatar avatar-sm mr-4 mr-lg-5" href="#"
-                          data-chat-sidebar-toggle="#chat-1-user-profile">
-                          <img class="avatar-img" src="/images/avatars/11.jpg" alt="">
-                        </a>
-
-                        <!-- Message: body -->
-                        <div class="message-body">
-
-                          <!-- Message: row -->
-                          <div class="message-row">
-                            <div class="d-flex align-items-center">
-
-                              <!-- Message: content -->
-                              <div class="message-content bg-light">
-                                <div>
-                                </div>
-                                <div> {{ message.message }}</div>
-
-                                <div class="mt-1">
-                                  <small class="opacity-65">{{timeFormat(message.created_at)}}</small>
-                                </div>
-                              </div>
-                              <!-- Message: content -->
-
-                            </div>
-                          </div>
-                          <!-- Message: row -->
-
-                        </div>
-                        <!-- Message: Body -->
-                      </div>
-                      <!-- Message -->
-
-                      <!-- Divider -->
-                      <!-- <div class="message-divider my-9 mx-lg-5">
-                        <div class="row align-items-center">
-
-                          <div class="col">
-                            <hr>
-                          </div>
-
-                          <div class="col-auto">
-                            <small class="text-muted">Today</small>
-                          </div>
-
-                          <div class="col">
-                            <hr>
-                          </div>
-                        </div>
-                      </div> -->
-                      <!-- Divider -->
-
-                      <!-- Message -->
-                      <div class="message message-right replies" v-if="message.receiver_id != signedUser.id">
-                        <!-- Avatar -->
-                        <a class="avatar avatar-sm ml-4 ml-lg-5 d-none d-lg-block" href="#"
-                          data-chat-sidebar-toggle="#chat-1-user-profile">
-                          <img class="avatar-img" src="/images/avatars/11.jpg" alt="">
-                        </a>
-
-                        <!-- Message: body -->
-                        <div class="message-body">
-
-                          <!-- Message: row -->
-                          <div class="message-row">
-                            <div class="d-flex align-items-center justify-content-end">
-
-                              <!-- Message: content -->
-                              <div class="message-content bg-primary text-white">
-                                <div class="h5 text-white">{{ message.user.name }}</div>
-                                <div> {{ message.message }}</div>
-
-                                <div class="mt-1">
-                                  <small class="opacity-65">{{timeFormat(message.created_at)}}</small>
-                                </div>
-                              </div>
-                              <!-- Message: content -->
-
-                            </div>
-                          </div>
-                          <!-- Message: row -->
-
-                        </div>
-                        <!-- Message: body -->
-                      </div>
-                      <!-- Message -->
-
+                  <div class="chat-message-left pb-4" v-if="message.receiver_id === signedUser.id">
+                    <div>
+                      <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                      <div class="text-muted small text-nowrap mt-2">{{timeFormat(message.created_at)}}</div>
                     </div>
-
-                    <!-- Scroll to end -->
-                    <div class="end-of-chat"></div>
-                  </div>
-                  <!-- Chat: Content -->
-
-                  <!-- Chat: Footer -->
-                  <div class="chat-footer border-top py-4 py-lg-6 px-lg-8">
-                    <div class="container-xxl">
-
-                      <div class="form-row align-items-center">
-                        <div class="col">
-                          <div class="input-group">
-                            <input type="text" id="chat-id-1-input" name="message"
-                              class="form-control bg-light border-0 mb-4 input-group text-black-50" placeholder="Type your message here..."
-                              v-model="newMessage" @keyup.enter="sendMessage">
-                          </div>
-                        </div>
-
-                        <!-- Submit button -->
-                        <div class="col-auto">
-                          <button class="btn btn-ico btn-primary rounded-circle mb-4" @click="sendMessage"><img src="/images/icon.png" class="rounded-circle mr-4" style="height: 24px">
-                          </button>
-                        </div>
-                      </div>
-
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                      <div class="font-weight-bold mb-1">{{ message.user.name }}</div>
+                      {{ message.message }}
                     </div>
                   </div>
-                  <!-- Chat: Footer -->
-
-                  <!-- Chat: DropzoneJS container -->
-                  <div class="chat-files hide-scrollbar px-lg-8">
-                    <div class="container-xxl">
-                      <div class="dropzone-previews-js form-row py-4"></div>
-                    </div>
-                  </div>
-                  <!-- Chat: DropzoneJS container -->
-
-
-
-
                 </div>
-                <!-- Chat: body -->
-
               </div>
-              <!-- Chat -->
-
             </div>
-            <!-- Main Content -->
+
+            <div class="flex-grow-0 py-3 px-4 border-top">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Type your message" v-model="newMessage" @keydown="onTyping" @keyup.enter="sendMessage">
+                <button class="btn btn-primary" @click="sendMessage">Send</button>
+              </div>
+            </div>
 
           </div>
         </div>
-        <!-- Default Page -->
-
       </div>
-      <!-- Main Content -->
-
     </div>
-  </div>
+  </main>
 </template>
 
 <script type="text/javascript">
@@ -285,7 +145,9 @@
         newMessage: '',
         users: [],
         activeReceiver: null,
-        signedUser: null
+        signedUser: null,
+        typingFriend: false,
+        typingClock: null
       };
     },
     created(){
@@ -299,7 +161,17 @@
                   created_at: e.message.created_at,
                   user: e.user
               });
-      });
+          setTimeout(this.scrollToEnd,100);
+          })
+          .listenForWhisper('typing', (e)=> {
+            // console.log(e.user);
+            if (e.user.id === this.signedUser.id) {
+              this.typingFriend = true;
+              this.typingClock=setTimeout(()=>{
+                this.typingFriend = false;
+              },3000);
+            }
+          });
     },
 
     methods: {
@@ -341,6 +213,10 @@
           })
         },
 
+        scrollToEnd(){
+          document.getElementById('message-box').scrollTo(0,9999999);
+        },
+
         addMessage(message, receiver_id, user_id) {
             axios.post('/api/messages', {
                 message, receiver_id, user_id
@@ -358,8 +234,14 @@
             this.newMessage = '';
         },
 
+        onTyping() {
+          Echo.private('chat').whisper('typing',{
+            user: this.activeReceiver
+          })
+        },
+
         timeFormat(date) {
-            return moment(String(date)).format('hh:mm');
+            return moment(String(date)).format('HH:mm');
         }
     }
   };
