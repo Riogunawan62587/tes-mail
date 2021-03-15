@@ -197,7 +197,7 @@
 
                               <!-- Message: content -->
                               <div class="message-content bg-primary text-white">
-                                <div class="h5 text-white">{{ signedUser.name }}</div>
+                                <div class="h5 text-white">{{ message.user.name }}</div>
                                 <div> {{ message.message }}</div>
 
                                 <div class="mt-1">
@@ -297,6 +297,7 @@
               this.messages.push({
                   message: e.message.message,
                   created_at: e.message.created_at,
+                  user: e.user
               });
       });
     },
@@ -346,6 +347,7 @@
             }).then(response => {
                 this.messages.push({
                     message: response.data.message.message,
+                    user: response.data.user
                 });
             });
 

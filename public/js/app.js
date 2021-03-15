@@ -2177,7 +2177,8 @@ __webpack_require__.r(__webpack_exports__);
     Echo["private"]('chat').listen('MessageSentEvent', function (e) {
       _this.messages.push({
         message: e.message.message,
-        created_at: e.message.created_at
+        created_at: e.message.created_at,
+        user: e.user
       });
     });
   },
@@ -2232,7 +2233,8 @@ __webpack_require__.r(__webpack_exports__);
         user_id: user_id
       }).then(function (response) {
         _this7.messages.push({
-          message: response.data.message.message
+          message: response.data.message.message,
+          user: response.data.user
         });
       });
     },
@@ -62464,8 +62466,8 @@ var render = function() {
                                                                 [
                                                                   _vm._v(
                                                                     _vm._s(
-                                                                      _vm
-                                                                        .signedUser
+                                                                      message
+                                                                        .user
                                                                         .name
                                                                     )
                                                                   )

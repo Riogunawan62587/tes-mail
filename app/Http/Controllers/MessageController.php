@@ -59,7 +59,9 @@ class MessageController extends Controller
           'data'      => $message
         ];
 
-        broadcast(new MessageSentEvent($message))->toOthers();
+        $user = User::find($request->user_id);
+
+        broadcast(new MessageSentEvent($message, $user))->toOthers();
 
         return response()->json($response, Response::HTTP_CREATED);
 
