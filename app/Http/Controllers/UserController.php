@@ -17,4 +17,8 @@ class UserController extends Controller
     public function getSignedInUser(){
       return Auth::user();
     }
+
+    public function getActiveUser($id){
+      return User::find($id);
+    }
 }

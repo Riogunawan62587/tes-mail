@@ -7,12 +7,13 @@ use App\Models\Message;
 use App\Models\User;
 use Auth;
 use App\Events\MessageSentEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 class MessageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -22,7 +23,9 @@ class MessageController extends Controller
      */
     public function index()
     {
-        return Message::with('user')->get();
+        $messages = Message::with('user')->orderBy('created_at')->get();
+
+        return response()->json($messages, Response::HTTP_OK);
     }
 
     /**
@@ -43,19 +46,23 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
+        // $user = Auth::user();
+        //
+        // $message = $user->messages()->create([
+        //     'message' => $request->input('message'),
+        //     'receiver_id' => $request->receiver_id
+        // ]);
 
-        $message = $user->messages()->create([
-            'message' => $request->input('message'),
-            'receiver_id' => $request->receiver_id
-        ]);
-        // send event to listeners
-        broadcast(new MessageSentEvent($message->load('user'), $user))->toOthers();
+        $message = Message::create($request->all());
+        $response = [
+          'message'   => 'message sent',
+          'data'      => $message
+        ];
 
-        // return [
-        //     'message' => $message,
-        //     'user' => $user,
-        // ];
+        broadcast(new MessageSentEvent($message))->toOthers();
+
+        return response()->json($response, Response::HTTP_CREATED);
+
     }
 
     /**
@@ -72,7 +79,8 @@ class MessageController extends Controller
           $query->where(['user_id' => $user->id, 'receiver_id' => auth()->id()]);
         })->get();
 
-        return $message;
+        return response()->json($message, Response::HTTP_CREATED);
+        // return $message;
     }
 
     /**
