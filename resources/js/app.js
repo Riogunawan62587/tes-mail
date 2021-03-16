@@ -25,6 +25,7 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('private-chat', require('./components/PrivateChat.vue').default);
+Vue.component('send-message', require('./components/SendMessage.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

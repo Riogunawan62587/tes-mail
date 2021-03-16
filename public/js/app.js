@@ -1880,6 +1880,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _SendMessage_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SendMessage.vue */ "./resources/js/components/SendMessage.vue");
 //
 //
 //
@@ -2036,63 +2037,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    SendMessage: _SendMessage_vue__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   data: function data() {
     return {
       messages: [],
-      newMessage: "",
       users: [],
       activeReceiver: null,
       signedUser: null,
@@ -2111,13 +2063,15 @@ __webpack_require__.r(__webpack_exports__);
     Echo["private"]("chat").listen("MessageSentEvent", function (e) {
       _this.messages.push({
         message: e.message.message,
+        user_id: e.message.user_id,
+        receiver_id: e.message.receiver_id,
         created_at: e.message.created_at,
         user: e.user
       });
 
+      console.log(_this.messages);
       setTimeout(_this.scrollToEnd, 100);
     }).listenForWhisper("typing", function (e) {
-      // console.log(e.user);
       if (e.user.id === _this.signedUser.id) {
         _this.typingFriend = true;
         _this.typingClock = setTimeout(function () {
@@ -2127,65 +2081,43 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    fetchMessages: function fetchMessages() {
+    fetchPrivateMessage: function fetchPrivateMessage(receiver_id) {
       var _this2 = this;
 
-      axios.get("/messages").then(function (response) {
-        _this2.messages = response.data;
-      });
-    },
-    fetchPrivateMessage: function fetchPrivateMessage(receiver_id) {
-      var _this3 = this;
-
+      this.messages = [];
       this.fetchActiveReceiver(receiver_id);
       axios.get("api/messages").then(function (response) {
-        _this3.messages = response.data;
-        _this3.messages = _this3.messages.filter(function (message) {
-          return message.user_id === _this3.activeReceiver.id && message.receiver_id === _this3.signedUser.id || message.user_id === _this3.signedUser.id && message.receiver_id === _this3.activeReceiver.id;
+        _this2.messages = response.data;
+        _this2.messages = _this2.messages.filter(function (message) {
+          return message.user_id === _this2.activeReceiver.id && message.receiver_id === _this2.signedUser.id || message.user_id === _this2.signedUser.id && message.receiver_id === _this2.activeReceiver.id;
         });
       })["catch"](function (error) {
         console.log(error);
       });
     },
     fetchUsers: function fetchUsers() {
-      var _this4 = this;
+      var _this3 = this;
 
       axios.get("/users").then(function (response) {
-        _this4.users = response.data;
+        _this3.users = response.data;
       });
     },
     fetchSignedInUser: function fetchSignedInUser() {
-      var _this5 = this;
+      var _this4 = this;
 
       axios.get("/getSignedInUser").then(function (response) {
-        _this5.signedUser = response.data;
+        _this4.signedUser = response.data;
       });
     },
     fetchActiveReceiver: function fetchActiveReceiver(receiver_id) {
-      var _this6 = this;
+      var _this5 = this;
 
       axios.get("/getActiveUser/".concat(receiver_id)).then(function (response) {
-        _this6.activeReceiver = response.data;
+        _this5.activeReceiver = response.data;
       });
     },
     scrollToEnd: function scrollToEnd() {
       document.getElementById("message-box").scrollTo(0, 9999999);
-    },
-    addMessage: function addMessage(message, receiver_id, user_id) {
-      axios.post("/api/messages", {
-        message: message,
-        receiver_id: receiver_id,
-        user_id: user_id
-      });
-    },
-    sendMessage: function sendMessage() {
-      this.addMessage(this.newMessage, this.activeReceiver.id, this.signedUser.id);
-      this.newMessage = "";
-    },
-    onTyping: function onTyping() {
-      Echo["private"]("chat").whisper("typing", {
-        user: this.activeReceiver
-      });
     },
     timeFormat: function timeFormat(date) {
       return moment(String(date)).format("HH:mm");
@@ -2202,6 +2134,58 @@ __webpack_require__.r(__webpack_exports__);
         var date_data = day + "/" + month + "/" + year;
         return date_data;
       }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SendMessage.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SendMessage.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'SendMessage',
+  data: function data() {
+    return {
+      newMessage: ""
+    };
+  },
+  props: ['activeReceiver', 'signedUser', 'fetchPrivateMessage'],
+  methods: {
+    addMessage: function addMessage(message, receiver_id, user_id) {
+      axios.post("/api/messages", {
+        message: message,
+        receiver_id: receiver_id,
+        user_id: user_id
+      });
+    },
+    sendMessage: function sendMessage() {
+      this.addMessage(this.newMessage, this.activeReceiver.id, this.signedUser.id);
+      this.newMessage = "";
+    },
+    onTyping: function onTyping() {
+      Echo["private"]("chat").whisper("typing", {
+        user: this.activeReceiver
+      });
     }
   }
 });
@@ -2236,6 +2220,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
 Vue.component('private-chat', __webpack_require__(/*! ./components/PrivateChat.vue */ "./resources/js/components/PrivateChat.vue").default);
+Vue.component('send-message', __webpack_require__(/*! ./components/SendMessage.vue */ "./resources/js/components/SendMessage.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -6761,7 +6746,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nbody {\r\n  margin-top: 20px;\n}\n.chat-online {\r\n  color: #34ce57;\n}\n.chat-offline {\r\n  color: #e4606d;\n}\n.chat-messages {\r\n  display: flex;\r\n  flex-direction: column;\r\n  max-height: 800px;\r\n  overflow-y: scroll;\n}\n.chat-message-left,\r\n.chat-message-right {\r\n  display: flex;\r\n  flex-shrink: 0;\n}\n.chat-message-left {\r\n  margin-right: auto;\n}\n.chat-message-right {\r\n  flex-direction: row-reverse;\r\n  margin-left: auto;\n}\n.py-3 {\r\n  padding-top: 1rem !important;\r\n  padding-bottom: 1rem !important;\n}\n.px-4 {\r\n  padding-right: 1.5rem !important;\r\n  padding-left: 1.5rem !important;\n}\n.flex-grow-0 {\r\n  flex-grow: 0 !important;\n}\n.border-top {\r\n  border-top: 1px solid #dee2e6 !important;\n}\n.date-divider {\r\n  text-align: center;\r\n  color: white;\r\n  background-color: rgb(129, 129, 129);\r\n  border-radius: 10px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nbody {\r\n    margin-top: 20px;\n}\n.chat-online {\r\n    color: #34ce57;\n}\n.chat-offline {\r\n    color: #e4606d;\n}\n.chat-messages {\r\n    display: flex;\r\n    flex-direction: column;\r\n    max-height: 800px;\r\n    overflow-y: scroll;\n}\n.chat-message-left,\r\n.chat-message-right {\r\n    display: flex;\r\n    flex-shrink: 0;\n}\n.chat-message-left {\r\n    margin-right: auto;\n}\n.chat-message-right {\r\n    flex-direction: row-reverse;\r\n    margin-left: auto;\n}\n.py-3 {\r\n    padding-top: 1rem !important;\r\n    padding-bottom: 1rem !important;\n}\n.px-4 {\r\n    padding-right: 1.5rem !important;\r\n    padding-left: 1.5rem !important;\n}\n.flex-grow-0 {\r\n    flex-grow: 0 !important;\n}\n.border-top {\r\n    border-top: 1px solid #dee2e6 !important;\n}\n.date-divider {\r\n    text-align: center;\r\n    color: white;\r\n    background-color: rgb(129, 129, 129);\r\n    border-radius: 10px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -62351,6 +62336,45 @@ component.options.__file = "resources/js/components/PrivateChat.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/SendMessage.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/SendMessage.vue ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SendMessage_vue_vue_type_template_id_11bcf2c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SendMessage.vue?vue&type=template&id=11bcf2c4& */ "./resources/js/components/SendMessage.vue?vue&type=template&id=11bcf2c4&");
+/* harmony import */ var _SendMessage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SendMessage.vue?vue&type=script&lang=js& */ "./resources/js/components/SendMessage.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _SendMessage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _SendMessage_vue_vue_type_template_id_11bcf2c4___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SendMessage_vue_vue_type_template_id_11bcf2c4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/SendMessage.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************!*\
   !*** ./resources/js/components/ExampleComponent.vue?vue&type=script&lang=js& ***!
@@ -62380,6 +62404,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrivateChat.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
+/***/ "./resources/js/components/SendMessage.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/SendMessage.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SendMessage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SendMessage.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SendMessage.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SendMessage_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -62426,6 +62466,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_template_id_237378e0___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PrivateChat_vue_vue_type_template_id_237378e0___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PrivateChat.vue?vue&type=template&id=237378e0& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/PrivateChat.vue?vue&type=template&id=237378e0&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/SendMessage.vue?vue&type=template&id=11bcf2c4&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/SendMessage.vue?vue&type=template&id=11bcf2c4& ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SendMessage_vue_vue_type_template_id_11bcf2c4___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SendMessage_vue_vue_type_template_id_11bcf2c4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SendMessage_vue_vue_type_template_id_11bcf2c4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SendMessage.vue?vue&type=template&id=11bcf2c4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SendMessage.vue?vue&type=template&id=11bcf2c4&");
 
 
 /***/ }),
@@ -62536,9 +62593,9 @@ var render = function() {
                           _vm._v(" "),
                           _c("div", { staticClass: "flex-grow-1 ml-3" }, [
                             _vm._v(
-                              "\n                " +
+                              "\r\n                                " +
                                 _vm._s(user.name) +
-                                "\n                "
+                                "\r\n                                "
                             ),
                             _vm._m(1, true)
                           ])
@@ -62553,207 +62610,189 @@ var render = function() {
             2
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-12 col-lg-7 col-xl-9" }, [
-            _c(
-              "div",
-              { staticClass: "py-2 px-4 border-bottom d-none d-lg-block" },
-              [
-                _c("div", { staticClass: "d-flex align-items-center py-1" }, [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _vm.activeReceiver
-                    ? _c("div", { staticClass: "flex-grow-1 pl-3" }, [
-                        _c("strong", [_vm._v(_vm._s(_vm.activeReceiver.name))]),
-                        _vm._v(" "),
-                        _vm.typingFriend
-                          ? _c("div", { staticClass: "text-muted small" }, [
-                              _c("em", [_vm._v("Typing")])
-                            ])
-                          : _vm._e()
-                      ])
-                    : _c("div", { staticClass: "flex-grow-1 pl-3" }, [
-                        _c("strong", [_vm._v("No one is selected")])
-                      ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "position-relative" }, [
+          _c(
+            "div",
+            { staticClass: "col-12 col-lg-7 col-xl-9" },
+            [
               _c(
                 "div",
-                {
-                  staticClass: "chat-messages p-4",
-                  attrs: { id: "message-box" }
-                },
-                _vm._l(_vm.messages, function(message) {
-                  return _c("div", { staticClass: "message-warp" }, [
-                    _c("div", { staticClass: "container col-2" }, [
-                      _c("div", {
-                        staticClass: "date-divider",
-                        domProps: {
-                          innerHTML: _vm._s(_vm.groupByDate(message.created_at))
-                        }
-                      })
-                    ]),
+                { staticClass: "py-2 px-4 border-bottom d-none d-lg-block" },
+                [
+                  _c("div", { staticClass: "d-flex align-items-center py-1" }, [
+                    _vm._m(2),
                     _vm._v(" "),
-                    message.receiver_id !== _vm.signedUser.id
-                      ? _c("div", { staticClass: "chat-message-right pb-4" }, [
-                          _c("div", [
-                            _c("img", {
-                              staticClass: "rounded-circle mr-1",
-                              attrs: {
-                                src:
-                                  "https://bootdey.com/img/Content/avatar/avatar1.png",
-                                alt: "Chris Wood",
-                                width: "40",
-                                height: "40"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "text-muted small text-nowrap mt-2"
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(_vm.timeFormat(message.created_at)) +
-                                    "\n                    "
-                                )
-                              ]
-                            )
+                    _vm.activeReceiver
+                      ? _c("div", { staticClass: "flex-grow-1 pl-3" }, [
+                          _c("strong", [
+                            _vm._v(_vm._s(_vm.activeReceiver.name))
                           ]),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "flex-shrink-1 bg-light rounded py-2 px-3 mr-3"
-                            },
-                            [
-                              _c(
-                                "div",
-                                { staticClass: "font-weight-bold mb-1" },
-                                [_vm._v("You")]
-                              ),
-                              _vm._v(
-                                "\n                    " +
-                                  _vm._s(message.message) +
-                                  "\n                  "
-                              )
-                            ]
-                          )
+                          _vm.typingFriend
+                            ? _c("div", { staticClass: "text-muted small" }, [
+                                _c("em", [_vm._v("Typing")])
+                              ])
+                            : _vm._e()
                         ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    message.receiver_id === _vm.signedUser.id
-                      ? _c("div", { staticClass: "chat-message-left pb-4" }, [
-                          _c("div", [
-                            _c("img", {
-                              staticClass: "rounded-circle mr-1",
-                              attrs: {
-                                src:
-                                  "https://bootdey.com/img/Content/avatar/avatar3.png",
-                                alt: "Sharon Lessman",
-                                width: "40",
-                                height: "40"
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "text-muted small text-nowrap mt-2"
-                              },
-                              [
-                                _vm._v(
-                                  "\n                      " +
-                                    _vm._s(_vm.timeFormat(message.created_at)) +
-                                    "\n                    "
-                                )
-                              ]
+                      : _c("div", { staticClass: "flex-grow-1 pl-3" }, [
+                          _c("strong", [_vm._v("No one is selected")])
+                        ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "position-relative" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "chat-messages p-4",
+                    attrs: { id: "message-box" }
+                  },
+                  _vm._l(_vm.messages, function(message) {
+                    return _c("div", { staticClass: "message-warp" }, [
+                      _c("div", { staticClass: "container col-2" }, [
+                        _c("div", {
+                          staticClass: "date-divider",
+                          domProps: {
+                            innerHTML: _vm._s(
+                              _vm.groupByDate(message.created_at)
                             )
-                          ]),
-                          _vm._v(" "),
-                          _c(
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      message.receiver_id !== _vm.signedUser.id
+                        ? _c(
                             "div",
-                            {
-                              staticClass:
-                                "flex-shrink-1 bg-light rounded py-2 px-3 ml-3"
-                            },
+                            { staticClass: "chat-message-right pb-4" },
                             [
+                              _c("div", [
+                                _c("img", {
+                                  staticClass: "rounded-circle mr-1",
+                                  attrs: {
+                                    src:
+                                      "https://bootdey.com/img/Content/avatar/avatar1.png",
+                                    alt: "Chris Wood",
+                                    width: "40",
+                                    height: "40"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "text-muted small text-nowrap mt-2"
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\r\n                                            " +
+                                        _vm._s(
+                                          _vm.timeFormat(message.created_at)
+                                        ) +
+                                        "\r\n                                        "
+                                    )
+                                  ]
+                                )
+                              ]),
+                              _vm._v(" "),
                               _c(
                                 "div",
-                                { staticClass: "font-weight-bold mb-1" },
+                                {
+                                  staticClass:
+                                    "flex-shrink-1 bg-light rounded py-2 px-3 mr-3"
+                                },
                                 [
+                                  _c(
+                                    "div",
+                                    { staticClass: "font-weight-bold mb-1" },
+                                    [_vm._v("You")]
+                                  ),
                                   _vm._v(
-                                    "\n                      " +
-                                      _vm._s(message.user.name) +
-                                      "\n                    "
+                                    "\r\n                                        " +
+                                      _vm._s(message.message) +
+                                      "\r\n                                    "
                                   )
                                 ]
-                              ),
-                              _vm._v(
-                                "\n                    " +
-                                  _vm._s(message.message) +
-                                  "\n                  "
                               )
                             ]
                           )
-                        ])
-                      : _vm._e()
-                  ])
-                }),
-                0
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex-grow-0 py-3 px-4 border-top" }, [
-              _c("div", { staticClass: "input-group" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.newMessage,
-                      expression: "newMessage"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", placeholder: "Type your message" },
-                  domProps: { value: _vm.newMessage },
-                  on: {
-                    keydown: _vm.onTyping,
-                    keyup: function($event) {
-                      if (
-                        !$event.type.indexOf("key") &&
-                        _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                      ) {
-                        return null
-                      }
-                      return _vm.sendMessage($event)
-                    },
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.newMessage = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    on: { click: _vm.sendMessage }
-                  },
-                  [_vm._v("\n                Send\n              ")]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      message.receiver_id === _vm.signedUser.id
+                        ? _c("div", { staticClass: "chat-message-left pb-4" }, [
+                            _c("div", [
+                              _c("img", {
+                                staticClass: "rounded-circle mr-1",
+                                attrs: {
+                                  src:
+                                    "https://bootdey.com/img/Content/avatar/avatar3.png",
+                                  alt: "Sharon Lessman",
+                                  width: "40",
+                                  height: "40"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "text-muted small text-nowrap mt-2"
+                                },
+                                [
+                                  _vm._v(
+                                    "\r\n                                            " +
+                                      _vm._s(
+                                        _vm.timeFormat(message.created_at)
+                                      ) +
+                                      "\r\n                                        "
+                                  )
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "flex-shrink-1 bg-light rounded py-2 px-3 ml-3"
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "font-weight-bold mb-1" },
+                                  [
+                                    _vm._v(
+                                      "\r\n                                            " +
+                                        _vm._s(message.user.name) +
+                                        "\r\n                                        "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(
+                                  "\r\n                                        " +
+                                    _vm._s(message.message) +
+                                    "\r\n                                    "
+                                )
+                              ]
+                            )
+                          ])
+                        : _vm._e()
+                    ])
+                  }),
+                  0
                 )
-              ])
-            ])
-          ])
+              ]),
+              _vm._v(" "),
+              _c("SendMessage", {
+                attrs: {
+                  activeReceiver: _vm.activeReceiver,
+                  signedUser: _vm.signedUser,
+                  fetchPrivateMessage: _vm.fetchPrivateMessage
+                }
+              })
+            ],
+            1
+          )
         ])
       ])
     ])
@@ -62781,7 +62820,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "small" }, [
       _c("span", { staticClass: "fas fa-circle chat-online" }),
-      _vm._v("Online\n                ")
+      _vm._v("Online\r\n                                ")
     ])
   },
   function() {
@@ -62801,6 +62840,71 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SendMessage.vue?vue&type=template&id=11bcf2c4&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SendMessage.vue?vue&type=template&id=11bcf2c4& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "flex-grow-0 py-3 px-4 border-top" }, [
+    _c("div", { staticClass: "input-group" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.newMessage,
+            expression: "newMessage"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: { type: "text", placeholder: "Type your message" },
+        domProps: { value: _vm.newMessage },
+        on: {
+          keydown: _vm.onTyping,
+          keyup: function($event) {
+            if (
+              !$event.type.indexOf("key") &&
+              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+            ) {
+              return null
+            }
+            return _vm.sendMessage($event)
+          },
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.newMessage = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", on: { click: _vm.sendMessage } },
+        [_vm._v("\n            Send\n        ")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
