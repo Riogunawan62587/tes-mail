@@ -1,51 +1,55 @@
 <template>
   <div class="flex-grow-0 py-3 px-4 border-top">
-      <div class="input-group">
-          <input type="text" class="form-control" placeholder="Type your message" v-model="newMessage" @keydown="onTyping" @keyup.enter="sendMessage" />
-          <button class="btn btn-primary" @click="sendMessage">
-              Send
-          </button>
-      </div>
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Type your message"
+        v-model="newMessage"
+        @keydown="onTyping"
+        @keyup.enter="sendMessage"
+      />
+      <img class="uploading-image" />
+      <label for="img" class="btn mb-0">Upload</label>
+      <input type="file" accept="image/jpeg" id="img" style="display: none" />
+      <!-- <button class="btn">Upload</button> -->
+      <button class="btn btn-primary" @click="sendMessage">Send</button>
+    </div>
   </div>
 </template>
 
 <script>
-export default{
-  name: 'SendMessage',
+export default {
+  name: "SendMessage",
   data() {
-      return {
-        newMessage: ""
-      };
+    return {
+      newMessage: "",
+    };
   },
-  props: [
-    'activeReceiver',
-    'signedUser',
-    'fetchPrivateMessage'
-  ],
-  methods : {
+  props: ["activeReceiver", "signedUser", "fetchPrivateMessage"],
+  methods: {
     addMessage(message, receiver_id, user_id) {
-        axios.post("/api/messages", {
-            message,
-            receiver_id,
-            user_id,
-        });
+      axios.post("/api/messages", {
+        message,
+        receiver_id,
+        user_id,
+      });
     },
 
     sendMessage() {
-        this.addMessage(
-            this.newMessage,
-            this.activeReceiver.id,
-            this.signedUser.id
-        );
-        this.newMessage = "";
+      this.addMessage(
+        this.newMessage,
+        this.activeReceiver.id,
+        this.signedUser.id
+      );
+      this.newMessage = "";
     },
 
     onTyping() {
-        Echo.private("chat").whisper("typing", {
-            user: this.activeReceiver,
-        });
-    }
-  }
-}
-
+      Echo.private("chat").whisper("typing", {
+        user: this.activeReceiver,
+      });
+    },
+  },
+};
 </script>

@@ -2162,14 +2162,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'SendMessage',
+  name: "SendMessage",
   data: function data() {
     return {
       newMessage: ""
     };
   },
-  props: ['activeReceiver', 'signedUser', 'fetchPrivateMessage'],
+  props: ["activeReceiver", "signedUser", "fetchPrivateMessage"],
   methods: {
     addMessage: function addMessage(message, receiver_id, user_id) {
       axios.post("/api/messages", {
@@ -62896,10 +62905,21 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _c("img", { staticClass: "uploading-image" }),
+      _vm._v(" "),
+      _c("label", { staticClass: "btn mb-0", attrs: { for: "img" } }, [
+        _vm._v("Upload")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticStyle: { display: "none" },
+        attrs: { type: "file", accept: "image/jpeg", id: "img" }
+      }),
+      _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn btn-primary", on: { click: _vm.sendMessage } },
-        [_vm._v("\n            Send\n        ")]
+        [_vm._v("Send")]
       )
     ])
   ])
